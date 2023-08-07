@@ -33,7 +33,7 @@ export default defineConfig({
             purpose: 'any maskable',
           },
         ],
-        theme_color: '#ffffff',
+        theme_color: '#1c7ed6',
       },
     }),
   ],
