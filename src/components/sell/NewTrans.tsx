@@ -21,7 +21,7 @@ const NewTrans: React.FC = () => {
         placeholder="Enter product name"
         icon={<IconSearch size="0.8rem" />}
       />
-      <Table>
+      <Table fontSize="xs">
         <thead>
           <tr>
             <th>Product</th>
