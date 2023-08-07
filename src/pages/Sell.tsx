@@ -11,7 +11,7 @@ const Sell: React.FC = () => {
         backgroundColor: theme.colors.gray[0],
       })}
     >
-      <Card>
+      <Card mih="80vh">
         <NewTrans />
         <TransHistory />
       </Card>
