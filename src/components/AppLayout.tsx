@@ -36,7 +36,7 @@ const AppLayout: React.FC = () => {
           p="md"
           hiddenBreakpoint="sm"
           hidden={!opened}
-          width={{ sm: 200, lg: 300 }}
+          width={{ sm: 200, lg: 220 }}
         >
           {navData.map((item: any, key: number) => (
             <NavLink

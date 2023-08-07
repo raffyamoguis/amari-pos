@@ -78,14 +78,25 @@ const NewTrans: React.FC = () => {
         </tbody>
       </Table>
       <Divider />
-      <Group mt={6} position="right">
-        <NumberInput label="Total" defaultValue={0} hideControls disabled />
-        <NumberInput label="Change" defaultValue={0} hideControls disabled />
-        <NumberInput label="Amount" defaultValue={0} hideControls />
-      </Group>
-      <Group mt={10} mb={4} position="right">
+      <Group mt={20} position="right" align="end">
+        <NumberInput
+          label="Total"
+          defaultValue={0}
+          maw={70}
+          hideControls
+          disabled
+        />
+        <NumberInput
+          label="Change"
+          defaultValue={0}
+          maw={70}
+          hideControls
+          disabled
+        />
+        <NumberInput label="Amount" defaultValue={0} maw={70} hideControls />
         <Button>Proceed</Button>
       </Group>
+      <Group mt={10} mb={4} position="right"></Group>
     </>
   );
 };
