@@ -1,20 +1,24 @@
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import {
   AppShell,
   Navbar,
+  NavLink,
   Header,
   Footer,
-  Text,
   MediaQuery,
   Burger,
   useMantineTheme,
   Title,
 } from "@mantine/core";
 
+import { navData } from "../lib/nav/data";
+
 const AppLayout: React.FC = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const location = useLocation();
+
   return (
     <AppShell
       styles={{
@@ -34,7 +38,16 @@ const AppLayout: React.FC = () => {
           hidden={!opened}
           width={{ sm: 200, lg: 300 }}
         >
-          <Text>Application navbar</Text>
+          {navData.map((item: any, key: number) => (
+            <NavLink
+              key={key}
+              component={Link}
+              to={item.route}
+              label={item.label}
+              icon={<item.icon size="1rem" stroke={1.5} />}
+              active={item.route === location.pathname}
+            />
+          ))}
         </Navbar>
       }
       footer={

@@ -6,6 +6,11 @@ import AuthRoute from "./util/AuthRoute";
 
 // Pages
 import Home from "./pages/Home";
+import Sell from "./pages/Sell";
+import Medicine from "./pages/Medicine";
+import Stocks from "./pages/Stocks";
+import OtherSupplies from "./pages/OtherSupplies";
+import Request from "./pages/Request";
 import Login from "./pages/auth/Login";
 
 export default function App() {
@@ -25,6 +30,11 @@ export default function App() {
             </Route>
             <Route element={<ProtectedRoutes />}>
               <Route path="/" element={<Home />} />
+              <Route path="/sell" element={<Sell />} />
+              <Route path="/medicine" element={<Medicine />} />
+              <Route path="/othersupplies" element={<OtherSupplies />} />
+              <Route path="/stocks" element={<Stocks />} />
+              <Route path="/request" element={<Request />} />
             </Route>
           </Routes>
         </AuthProvider>

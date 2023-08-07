@@ -10,7 +10,7 @@ import {
 
 export const navData = [
     {label: "Home", icon: IconHome2, route: "/"},
-    {label: "Sell", icon: IconBuildingStore, route: "/sell"},
+    {label: "Transactions", icon: IconBuildingStore, route: "/sell"},
     {label: "Medicine", icon: IconNurse, route: "/medicine"},
     {label: "Other Supplies", icon: IconBrandDeliveroo, route: "/othersupplies"},
     {label: "Stocks", icon: IconBuildingWarehouse, route: "/stocks"},
