@@ -7,7 +7,7 @@ import {
   ActionIcon,
   Group,
 } from "@mantine/core";
-import { IconSearch, IconTrash, IconReceipt2 } from "@tabler/icons-react";
+import { IconSearch, IconTrash} from "@tabler/icons-react";
 
 const NewTrans: React.FC = () => {
   return (
