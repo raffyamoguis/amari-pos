@@ -8,7 +8,6 @@ import {
   Group,
   Divider,
   Button,
-  Box,
 } from "@mantine/core";
 import { IconSearch, IconTrash } from "@tabler/icons-react";
 
