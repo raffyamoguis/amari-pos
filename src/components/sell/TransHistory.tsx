@@ -5,7 +5,7 @@ const TransHistory: React.FC = () => {
   return (
     <>
       <Text mb={10}>Transaction History</Text>
-      <Table>
+      <Table fontSize="xs">
         <thead>
           <tr>
             <th>Purchase Date</th>

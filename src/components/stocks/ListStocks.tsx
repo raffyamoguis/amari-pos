@@ -5,7 +5,7 @@ import BadgeStock from "../BadgeStock";
 
 const ListStocks: React.FC = () => {
   return (
-    <Table mt={10}>
+    <Table mt={10} fontSize="xs">
       <thead>
         <tr>
           <th>Name</th>

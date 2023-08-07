@@ -13,7 +13,7 @@ const ListMedicine: React.FC = () => {
           icon={<IconSearch size="0.8rem" />}
         />
       </Group>
-      <Table>
+      <Table fontSize="xs">
         <thead>
           <tr>
             <th>Batch no</th>
