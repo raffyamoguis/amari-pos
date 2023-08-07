@@ -6,8 +6,11 @@ import {
   Table,
   ActionIcon,
   Group,
+  Divider,
+  Button,
+  Box,
 } from "@mantine/core";
-import { IconSearch, IconTrash} from "@tabler/icons-react";
+import { IconSearch, IconTrash } from "@tabler/icons-react";
 
 const NewTrans: React.FC = () => {
   return (
@@ -15,10 +18,11 @@ const NewTrans: React.FC = () => {
       <Text mb={10}>New Transactions</Text>
       <TextInput
         mb={4}
+        w={300}
         placeholder="Enter product name"
         icon={<IconSearch size="0.8rem" />}
       />
-      <Table fontSize="xs">
+      <Table>
         <thead>
           <tr>
             <th>Product</th>
@@ -58,12 +62,30 @@ const NewTrans: React.FC = () => {
               </ActionIcon>
             </td>
           </tr>
+          <tr>
+            <td>Lorem Ipsom</td>
+            <td>500</td>
+            <td>5.00</td>
+            <td>
+              <NumberInput sx={{ width: "70px" }} defaultValue={0} />
+            </td>
+            <td>50.00</td>
+            <td>
+              <ActionIcon color="red" size="sm">
+                <IconTrash size="0.875rem" />
+              </ActionIcon>
+            </td>
+          </tr>
         </tbody>
       </Table>
-      <Group mb={4}>
+      <Divider />
+      <Group mt={6} position="right">
         <NumberInput label="Total" defaultValue={0} hideControls disabled />
         <NumberInput label="Change" defaultValue={0} hideControls disabled />
         <NumberInput label="Amount" defaultValue={0} hideControls />
+      </Group>
+      <Group mt={10} mb={4} position="right">
+        <Button>Proceed</Button>
       </Group>
     </>
   );
