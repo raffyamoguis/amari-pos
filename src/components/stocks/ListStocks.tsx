@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, NumberInput, Badge } from "@mantine/core";
+import { Table, NumberInput } from "@mantine/core";
 
 import BadgeStock from "../BadgeStock";
 
