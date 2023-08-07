@@ -9,7 +9,6 @@ const ListMedicine: React.FC = () => {
     <>
       <Group mt={20}>
         <TextInput
-          label="Search medicine"
           placeholder="Enter medicine name"
           icon={<IconSearch size="0.8rem" />}
         />
