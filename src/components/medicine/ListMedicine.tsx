@@ -7,7 +7,7 @@ import IconAction from "../IconAction";
 const ListMedicine: React.FC = () => {
   return (
     <>
-      <Group mt={20}>
+      <Group mt={30}>
         <TextInput
           placeholder="Enter medicine name"
           icon={<IconSearch size="0.8rem" />}
