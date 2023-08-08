@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Group, Table, TextInput, Flex } from "@mantine/core";
 import { IconSearch, IconEye, IconEdit, IconTrash } from "@tabler/icons-react";
 
 import IconAction from "../IconAction";
 
 const ListMedicine: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Group mt={30}>
@@ -33,7 +36,11 @@ const ListMedicine: React.FC = () => {
             <td>Jun 20, 2025</td>
             <td>
               <Flex>
-                <IconAction color="blue" icon={<IconEye size="1.125rem" />} />
+                <IconAction
+                  color="blue"
+                  icon={<IconEye size="1.125rem" />}
+                  onClick={() => navigate(`/medicine/${10}`)}
+                />
                 <IconAction color="green" icon={<IconEdit size="1.125rem" />} />
                 <IconAction color="red" icon={<IconTrash size="1.125rem" />} />
               </Flex>
