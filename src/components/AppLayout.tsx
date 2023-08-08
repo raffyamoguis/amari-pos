@@ -10,6 +10,8 @@ import {
   Burger,
   useMantineTheme,
   Title,
+  Box,
+  Card,
 } from "@mantine/core";
 
 import { navData } from "../lib/nav/data";
@@ -75,7 +77,15 @@ const AppLayout: React.FC = () => {
         </Header>
       }
     >
-      <Outlet />
+      <Box
+        sx={(theme) => ({
+          backgroundColor: theme.colors.gray[0],
+        })}
+      >
+        <Card mih="80vh">
+          <Outlet />
+        </Card>
+      </Box>
     </AppShell>
   );
 };
