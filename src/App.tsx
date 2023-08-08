@@ -8,7 +8,7 @@ import AuthRoute from "./util/AuthRoute";
 import Home from "./pages/Home";
 import Sell from "./pages/Sell";
 import Medicine from "./pages/Medicine";
-import ViewMedicine from "./pages/medicine/ViewMedicine";
+import ViewMedicine from "./pages/medicine/UpdateMedicine";
 import Stocks from "./pages/Stocks";
 import OtherSupplies from "./pages/OtherSupplies";
 import Request from "./pages/Request";
