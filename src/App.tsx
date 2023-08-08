@@ -1,5 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./util/AuthContext";
 import ProtectedRoutes from "./util/ProtectedRoutes";
@@ -25,24 +26,26 @@ export default function App() {
       withNormalizeCSS
     >
       <Notifications position="top-right" />
-      <Router>
-        <AuthProvider>
-          <Routes>
-            <Route element={<AuthRoute />}>
-              <Route path="login" element={<Login />} />
-            </Route>
-            <Route element={<ProtectedRoutes />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/sell" element={<Sell />} />
-              <Route path="/medicine" element={<Medicine />} />
-              <Route path="/medicine/:id" element={<ViewMedicine />} />
-              <Route path="/othersupplies" element={<OtherSupplies />} />
-              <Route path="/stocks" element={<Stocks />} />
-              <Route path="/request" element={<Request />} />
-            </Route>
-          </Routes>
-        </AuthProvider>
-      </Router>
+      <ModalsProvider>
+        <Router>
+          <AuthProvider>
+            <Routes>
+              <Route element={<AuthRoute />}>
+                <Route path="login" element={<Login />} />
+              </Route>
+              <Route element={<ProtectedRoutes />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/sell" element={<Sell />} />
+                <Route path="/medicine" element={<Medicine />} />
+                <Route path="/medicine/:id" element={<ViewMedicine />} />
+                <Route path="/othersupplies" element={<OtherSupplies />} />
+                <Route path="/stocks" element={<Stocks />} />
+                <Route path="/request" element={<Request />} />
+              </Route>
+            </Routes>
+          </AuthProvider>
+        </Router>
+      </ModalsProvider>
     </MantineProvider>
   );
 }
