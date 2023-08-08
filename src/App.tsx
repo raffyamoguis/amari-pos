@@ -1,4 +1,9 @@
-import { MantineProvider } from "@mantine/core";
+import {
+  MantineProvider,
+  ColorSchemeProvider,
+  ColorScheme,
+} from "@mantine/core";
+import { useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -19,37 +24,53 @@ import ViewTransaction from "./pages/request/ViewTransaction";
 import Login from "./pages/auth/Login";
 
 export default function App() {
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "mantine-color-scheme",
+    defaultValue: "light",
+    getInitialValueInEffect: true,
+  });
+
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  useHotkeys([["mod+J", () => toggleColorScheme()]]);
   return (
-    <MantineProvider
-      theme={{
-        fontFamily: "Inter, sans-serif",
-      }}
-      withGlobalStyles
-      withNormalizeCSS
+    <ColorSchemeProvider
+      colorScheme={colorScheme}
+      toggleColorScheme={toggleColorScheme}
     >
-      <Notifications position="top-right" />
-      <ModalsProvider>
-        <Router>
-          <AuthProvider>
-            <Routes>
-              <Route element={<AuthRoute />}>
-                <Route path="login" element={<Login />} />
-              </Route>
-              <Route element={<ProtectedRoutes />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/sell" element={<Sell />} />
-                <Route path="/medicine" element={<Medicine />} />
-                <Route path="/medicine/:id" element={<UpdateMedicine />} />
-                <Route path="/othersupplies" element={<OtherSupplies />} />
-                <Route path="/othersupplies/:id" element={<UpdateSupply />} />
-                <Route path="/stocks" element={<Stocks />} />
-                <Route path="/request" element={<Request />} />
-                <Route path="/request/:id" element={<ViewTransaction />} />
-              </Route>
-            </Routes>
-          </AuthProvider>
-        </Router>
-      </ModalsProvider>
-    </MantineProvider>
+      <MantineProvider
+        theme={{
+          colorScheme,
+          fontFamily: "Inter, sans-serif",
+        }}
+        withGlobalStyles
+        withNormalizeCSS
+      >
+        <Notifications position="top-right" />
+        <ModalsProvider>
+          <Router>
+            <AuthProvider>
+              <Routes>
+                <Route element={<AuthRoute />}>
+                  <Route path="login" element={<Login />} />
+                </Route>
+                <Route element={<ProtectedRoutes />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/sell" element={<Sell />} />
+                  <Route path="/medicine" element={<Medicine />} />
+                  <Route path="/medicine/:id" element={<UpdateMedicine />} />
+                  <Route path="/othersupplies" element={<OtherSupplies />} />
+                  <Route path="/othersupplies/:id" element={<UpdateSupply />} />
+                  <Route path="/stocks" element={<Stocks />} />
+                  <Route path="/request" element={<Request />} />
+                  <Route path="/request/:id" element={<ViewTransaction />} />
+                </Route>
+              </Routes>
+            </AuthProvider>
+          </Router>
+        </ModalsProvider>
+      </MantineProvider>
+    </ColorSchemeProvider>
   );
 }
