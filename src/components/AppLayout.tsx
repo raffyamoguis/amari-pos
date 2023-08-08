@@ -40,16 +40,23 @@ const AppLayout: React.FC = () => {
           hidden={!opened}
           width={{ sm: 200, lg: 220 }}
         >
-          {navData.map((item: any, key: number) => (
-            <NavLink
-              key={key}
-              component={Link}
-              to={item.route}
-              label={item.label}
-              icon={<item.icon size="1rem" stroke={1.5} />}
-              active={item.route === location.pathname}
-            />
-          ))}
+          {navData.map((item: any, key: number) => {
+            // Checks the route for home route and nested routes
+            const isRootLink = item.route === "/";
+            const isActive = isRootLink
+              ? location.pathname === item.route
+              : location.pathname.startsWith(item.route);
+            return (
+              <NavLink
+                key={key}
+                component={Link}
+                to={item.route}
+                label={item.label}
+                icon={<item.icon size="1rem" stroke={1.5} />}
+                active={isActive}
+              />
+            );
+          })}
         </Navbar>
       }
       footer={
