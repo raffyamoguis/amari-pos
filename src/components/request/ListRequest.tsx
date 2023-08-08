@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Table } from "@mantine/core";
 import { IconEye } from "@tabler/icons-react";
 
 import IconAction from "../IconAction";
 
 const ListRequest: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <Table mt={10} fontSize="xs">
       <thead>
@@ -41,7 +44,11 @@ const ListRequest: React.FC = () => {
           <td>50</td>
           <td>0</td>
           <td>
-            <IconAction color="blue" icon={<IconEye />} />
+            <IconAction
+              color="blue"
+              icon={<IconEye />}
+              onClick={() => navigate(`/request/${10}`)}
+            />
           </td>
         </tr>
       </tbody>

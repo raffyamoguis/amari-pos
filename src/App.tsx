@@ -15,6 +15,7 @@ import Stocks from "./pages/Stocks";
 import OtherSupplies from "./pages/OtherSupplies";
 import UpdateSupply from "./pages/othersupplies/UpdateSupply";
 import Request from "./pages/Request";
+import ViewTransaction from "./pages/request/ViewTransaction";
 import Login from "./pages/auth/Login";
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
                 <Route path="/othersupplies/:id" element={<UpdateSupply />} />
                 <Route path="/stocks" element={<Stocks />} />
                 <Route path="/request" element={<Request />} />
+                <Route path="/request/:id" element={<ViewTransaction />} />
               </Route>
             </Routes>
           </AuthProvider>
