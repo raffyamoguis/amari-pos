@@ -5,16 +5,17 @@ import {
   Navbar,
   NavLink,
   Header,
-  Footer,
   MediaQuery,
   Burger,
   useMantineTheme,
   Title,
   Box,
   Card,
+  Group,
 } from "@mantine/core";
 
 import { navData } from "../lib/nav/data";
+import AvatarMenu from "./AvatarMenu";
 
 const AppLayout: React.FC = () => {
   const theme = useMantineTheme();
@@ -59,15 +60,12 @@ const AppLayout: React.FC = () => {
           })}
         </Navbar>
       }
-      footer={
-        <Footer height={60} p="md">
-          Application footer
-        </Footer>
-      }
       header={
-        <Header height={{ base: 50, md: 70 }} p="md">
-          <div
-            style={{ display: "flex", alignItems: "center", height: "100%" }}
+        <Header height={{ base: 50, md: 70 }}>
+          <Group
+            sx={{ height: "100%", alignItems: "center" }}
+            px={20}
+            position="apart"
           >
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Burger
@@ -80,13 +78,17 @@ const AppLayout: React.FC = () => {
             </MediaQuery>
 
             <Title order={4}>Amari Angels</Title>
-          </div>
+            <AvatarMenu />
+          </Group>
         </Header>
       }
     >
       <Box
         sx={(theme) => ({
-          backgroundColor: theme.colors.gray[0],
+          backgroundColor:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[6]
+              : theme.colors.gray[0],
         })}
       >
         <Card mih="80vh">
