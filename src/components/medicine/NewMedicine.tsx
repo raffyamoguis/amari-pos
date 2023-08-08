@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, Group, TextInput, NumberInput, Button } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { DateInput } from "@mantine/dates";
 
 const NewMedicine: React.FC = () => {
@@ -17,7 +18,16 @@ const NewMedicine: React.FC = () => {
           clearable
         />
         <NumberInput placeholder="Enter price" maw={130} />
-        <Button>Add</Button>
+        <Button
+          onClick={() =>
+            notifications.show({
+              message: "Successfully added.",
+              color: "blue",
+            })
+          }
+        >
+          Add
+        </Button>
       </Group>
     </>
   );
