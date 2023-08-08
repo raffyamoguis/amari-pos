@@ -1,8 +1,13 @@
 import React from "react";
-import { Text } from "@mantine/core";
+
+import HomeCards from "../components/home/HomeCards";
 
 const Home: React.FC = () => {
-  return <Text>Home</Text>;
+  return (
+    <>
+      <HomeCards />
+    </>
+  );
 };
 
 export default Home;
