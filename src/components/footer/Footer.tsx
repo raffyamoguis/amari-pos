@@ -5,7 +5,7 @@ function Footer() {
   return (
     <footer className="footer">
       <Text size="xs" color="gray">
-        © 2023 Raffy Amoguis
+        © Raffy Amoguis
       </Text>
     </footer>
   );
