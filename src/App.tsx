@@ -8,6 +8,7 @@ import AuthRoute from "./util/AuthRoute";
 import Home from "./pages/Home";
 import Sell from "./pages/Sell";
 import Medicine from "./pages/Medicine";
+import ViewMedicine from "./pages/medicine/ViewMedicine";
 import Stocks from "./pages/Stocks";
 import OtherSupplies from "./pages/OtherSupplies";
 import Request from "./pages/Request";
@@ -32,6 +33,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/sell" element={<Sell />} />
               <Route path="/medicine" element={<Medicine />} />
+              <Route path="/medicine/:id" element={<ViewMedicine />} />
               <Route path="/othersupplies" element={<OtherSupplies />} />
               <Route path="/stocks" element={<Stocks />} />
               <Route path="/request" element={<Request />} />
