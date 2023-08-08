@@ -4,9 +4,14 @@ import { ActionIcon } from "@mantine/core";
 interface Props {
   color: "red" | "green" | "blue";
   icon: React.ReactNode;
+  onClick?: () => void;
 }
-const IconAction: React.FC<Props> = ({ color, icon }) => {
-  return <ActionIcon color={color}>{icon}</ActionIcon>;
+const IconAction: React.FC<Props> = ({ color, icon, onClick }) => {
+  return (
+    <ActionIcon color={color} onClick={onClick}>
+      {icon}
+    </ActionIcon>
+  );
 };
 
 export default IconAction;
