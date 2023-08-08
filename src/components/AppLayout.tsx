@@ -17,7 +17,6 @@ import { IconUserCircle } from "@tabler/icons-react";
 
 import { navData } from "../lib/nav/data";
 import AvatarMenu from "./AvatarMenu";
-import Footer from "./footer/Footer";
 
 const AppLayout: React.FC = () => {
   const theme = useMantineTheme();
