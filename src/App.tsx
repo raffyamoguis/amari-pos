@@ -1,4 +1,5 @@
 import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./util/AuthContext";
 import ProtectedRoutes from "./util/ProtectedRoutes";
@@ -23,6 +24,7 @@ export default function App() {
       withGlobalStyles
       withNormalizeCSS
     >
+      <Notifications position="top-right" />
       <Router>
         <AuthProvider>
           <Routes>
