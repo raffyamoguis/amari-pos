@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Avatar, Menu, useMantineColorScheme } from "@mantine/core";
 import {
   IconUserCircle,
@@ -20,13 +21,19 @@ const AvatarMenu: React.FC = () => {
       withArrow
     >
       <Menu.Target>
-        <Avatar color="cyan" radius="xl">
+        <Avatar color="cyan" radius="xl" src="/admin1.png">
           SA
         </Avatar>
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item icon={<IconUserCircle size={14} />}>Profile</Menu.Item>
+        <Menu.Item
+          component={Link}
+          to="/profile"
+          icon={<IconUserCircle size={14} />}
+        >
+          Profile
+        </Menu.Item>
         <Menu.Item
           icon={<IconBrightness size={14} />}
           onClick={() => toggleColorScheme()}

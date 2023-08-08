@@ -13,9 +13,11 @@ import {
   Card,
   Group,
 } from "@mantine/core";
+import { IconUserCircle } from "@tabler/icons-react";
 
 import { navData } from "../lib/nav/data";
 import AvatarMenu from "./AvatarMenu";
+import Footer from "./footer/Footer";
 
 const AppLayout: React.FC = () => {
   const theme = useMantineTheme();
@@ -41,23 +43,34 @@ const AppLayout: React.FC = () => {
           hidden={!opened}
           width={{ sm: 200, lg: 220 }}
         >
-          {navData.map((item: any, key: number) => {
-            // Checks the route for home route and nested routes
-            const isRootLink = item.route === "/";
-            const isActive = isRootLink
-              ? location.pathname === item.route
-              : location.pathname.startsWith(item.route);
-            return (
-              <NavLink
-                key={key}
-                component={Link}
-                to={item.route}
-                label={item.label}
-                icon={<item.icon size="1rem" stroke={1.5} />}
-                active={isActive}
-              />
-            );
-          })}
+          <Navbar.Section grow>
+            {navData.map((item: any, key: number) => {
+              // Checks the route for home route and nested routes
+              const isRootLink = item.route === "/";
+              const isActive = isRootLink
+                ? location.pathname === item.route
+                : location.pathname.startsWith(item.route);
+              return (
+                <NavLink
+                  key={key}
+                  component={Link}
+                  to={item.route}
+                  label={item.label}
+                  icon={<item.icon size="1rem" stroke={1.5} />}
+                  active={isActive}
+                />
+              );
+            })}
+          </Navbar.Section>
+          <Navbar.Section>
+            <NavLink
+              component={Link}
+              to="/profile"
+              label="Profile"
+              icon={<IconUserCircle size="1rem" stroke={1.5} />}
+              active={location.pathname === "/profile"}
+            />
+          </Navbar.Section>
         </Navbar>
       }
       header={
