@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { notifications } from "@mantine/notifications";
 import {
   Flex,
   Text,
@@ -19,6 +20,13 @@ const UpdateMedicine: React.FC = () => {
   const navigate = useNavigate();
 
   console.log(params.id);
+  const handleUpdate = () => {
+    notifications.show({
+      message: "Successfully updated.",
+      color: "green",
+    });
+  };
+
   return (
     <>
       <Flex align="center">
@@ -58,7 +66,9 @@ const UpdateMedicine: React.FC = () => {
             placeholder="Enter price"
             defaultValue={100}
           />
-          <Button color="green">Update</Button>
+          <Button color="green" onClick={handleUpdate}>
+            Update
+          </Button>
         </Stack>
       </Center>
     </>
