@@ -10,9 +10,10 @@ import AuthRoute from "./util/AuthRoute";
 import Home from "./pages/Home";
 import Sell from "./pages/Sell";
 import Medicine from "./pages/Medicine";
-import ViewMedicine from "./pages/medicine/UpdateMedicine";
+import UpdateMedicine from "./pages/medicine/UpdateMedicine";
 import Stocks from "./pages/Stocks";
 import OtherSupplies from "./pages/OtherSupplies";
+import UpdateSupply from "./pages/othersupplies/UpdateSupply";
 import Request from "./pages/Request";
 import Login from "./pages/auth/Login";
 
@@ -37,8 +38,9 @@ export default function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/sell" element={<Sell />} />
                 <Route path="/medicine" element={<Medicine />} />
-                <Route path="/medicine/:id" element={<ViewMedicine />} />
+                <Route path="/medicine/:id" element={<UpdateMedicine />} />
                 <Route path="/othersupplies" element={<OtherSupplies />} />
+                <Route path="/othersupplies/:id" element={<UpdateSupply />} />
                 <Route path="/stocks" element={<Stocks />} />
                 <Route path="/request" element={<Request />} />
               </Route>

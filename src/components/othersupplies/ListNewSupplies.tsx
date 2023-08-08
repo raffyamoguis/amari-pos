@@ -1,10 +1,35 @@
 import React from "react";
-import { Group, Table, TextInput, Flex } from "@mantine/core";
-import { IconSearch, IconEye, IconEdit, IconTrash } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
+import { Group, Table, TextInput, Flex, Text } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { modals } from "@mantine/modals";
+import { IconSearch, IconEdit, IconTrash } from "@tabler/icons-react";
 
 import IconAction from "../IconAction";
 
 const ListNewSupplies: React.FC = () => {
+  const navigate = useNavigate();
+
+  const openDeleteModal = () =>
+    modals.openConfirmModal({
+      title: "Confirm delete",
+      centered: true,
+      children: (
+        <Text size="sm">
+          Are you sure you want to delete this item? This action cannot be
+          reverted once the data is deleted it cannot be restored again.
+        </Text>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => {
+        notifications.show({
+          message: "Successfully deleted.",
+          color: "red",
+        });
+      },
+    });
   return (
     <>
       <Group mt={20}>
@@ -31,9 +56,16 @@ const ListNewSupplies: React.FC = () => {
             <td>Jun 20, 2025</td>
             <td>
               <Flex>
-                <IconAction color="blue" icon={<IconEye size="1.125rem" />} />
-                <IconAction color="green" icon={<IconEdit size="1.125rem" />} />
-                <IconAction color="red" icon={<IconTrash size="1.125rem" />} />
+                <IconAction
+                  color="green"
+                  icon={<IconEdit size="1.125rem" />}
+                  onClick={() => navigate(`/othersupplies/${10}`)}
+                />
+                <IconAction
+                  color="red"
+                  icon={<IconTrash size="1.125rem" />}
+                  onClick={openDeleteModal}
+                />
               </Flex>
             </td>
           </tr>

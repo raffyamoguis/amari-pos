@@ -1,0 +1,72 @@
+import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { notifications } from "@mantine/notifications";
+import {
+  Flex,
+  Text,
+  Center,
+  Stack,
+  TextInput,
+  NumberInput,
+  Button,
+} from "@mantine/core";
+import { DateInput } from "@mantine/dates";
+import { IconChevronLeft } from "@tabler/icons-react";
+
+import IconAction from "../../components/IconAction";
+
+const UpdateSupply: React.FC = () => {
+  const params = useParams();
+  const navigate = useNavigate();
+
+  console.log(params.id);
+  const handleUpdate = () => {
+    notifications.show({
+      message: "Successfully updated.",
+      color: "green",
+    });
+  };
+  return (
+    <>
+      <Flex align="center">
+        <IconAction
+          color="dark"
+          variant="transparent"
+          icon={<IconChevronLeft />}
+          onClick={() => navigate(-1)}
+        />
+        <Text>Update Other Supply</Text>
+      </Flex>
+      <Center mt={20}>
+        <Stack align="stretch" w={350}>
+          <TextInput
+            label="Name"
+            placeholder="Enter name"
+            defaultValue="Neozep"
+          />
+          <TextInput
+            label="Description"
+            placeholder="Enter description"
+            defaultValue="N/A"
+          />
+          <DateInput
+            label="Expiry date"
+            valueFormat="YYYY MMM DD"
+            placeholder="Set expiry date"
+            clearable
+          />
+          <NumberInput
+            label="Price"
+            placeholder="Enter price"
+            defaultValue={100}
+          />
+          <Button color="green" onClick={handleUpdate}>
+            Update
+          </Button>
+        </Stack>
+      </Center>
+    </>
+  );
+};
+
+export default UpdateSupply;
