@@ -5,8 +5,8 @@ import { useAuth } from "./AuthContext";
 import AppLayout from "../components/AppLayout";
 
 const ProtectedRoutes: React.FC = () => {
-  const { user } = useAuth();
-  return user ? <AppLayout /> : <Navigate to="/login" />;
+  const { session } = useAuth();
+  return session ? <AppLayout /> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoutes;

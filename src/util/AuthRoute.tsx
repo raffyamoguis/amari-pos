@@ -3,8 +3,8 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 const AuthRoute: React.FC = () => {
-  const { user } = useAuth();
-  return user ? <Navigate to="/" /> : <Outlet />;
+  const { session } = useAuth();
+  return session ? <Navigate to="/" /> : <Outlet />;
 };
 
 export default AuthRoute;
