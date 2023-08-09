@@ -13,7 +13,7 @@ import { useAuth } from "../../util/AuthContext";
 import Footer from "../../components/footer/Footer";
 
 const Login: React.FC = () => {
-  const { handleUserLogin } = useAuth();
+  const { handleUserLogin, isLoggingIn } = useAuth();
   return (
     <>
       <Flex justify="center" align="center" style={{ height: "100vh" }}>
@@ -29,7 +29,12 @@ const Login: React.FC = () => {
               label="Password"
               placeholder="Enter password"
             />
-            <Button mt={20} fullWidth onClick={handleUserLogin}>
+            <Button
+              mt={20}
+              fullWidth
+              onClick={handleUserLogin}
+              loading={isLoggingIn}
+            >
               Login
             </Button>
           </Card>

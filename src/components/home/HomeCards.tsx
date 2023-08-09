@@ -12,9 +12,9 @@ const HomeCards: React.FC = () => {
     <SimpleGrid
       cols={4}
       breakpoints={[
-        { maxWidth: "xl", cols: 3, spacing: "sm" },
-        { maxWidth: "lg", cols: 2, spacing: "md" },
-        { maxWidth: "md", cols: 1, spacing: "md" },
+        { maxWidth: "lg", cols: 3, spacing: "md" },
+        { maxWidth: "md", cols: 2, spacing: "md" },
+        { maxWidth: "sm", cols: 1, spacing: "sm" },
       ]}
     >
       <Card
@@ -24,9 +24,7 @@ const HomeCards: React.FC = () => {
         })}
       >
         <Group position="apart">
-          <Text color="dark" fw="bold">
-            Transactions
-          </Text>
+          <Text fw="bold">Transactions</Text>
           <IconActivityHeartbeat />
         </Group>
         <Text ta="center" fz={50} fw="bold">
@@ -40,9 +38,7 @@ const HomeCards: React.FC = () => {
         })}
       >
         <Group position="apart">
-          <Text color="dark" fw="bold">
-            Sales
-          </Text>
+          <Text fw="bold">Sales</Text>
           <IconReportMoney />
         </Group>
         <Text ta="center" fz={50} fw="bold">
@@ -56,9 +52,7 @@ const HomeCards: React.FC = () => {
         })}
       >
         <Group position="apart">
-          <Text color="dark" fw="bold">
-            Medicines
-          </Text>
+          <Text fw="bold">Medicines</Text>
           <IconFirstAidKit />
         </Group>
         <Text ta="center" fz={50} fw="bold">
@@ -72,9 +66,7 @@ const HomeCards: React.FC = () => {
         })}
       >
         <Group position="apart">
-          <Text color="dark" fw="bold">
-            Other
-          </Text>
+          <Text fw="bold">Other</Text>
           <IconBrandDeliveroo />
         </Group>
         <Text ta="center" fz={50} fw="bold">
