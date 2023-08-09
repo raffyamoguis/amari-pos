@@ -1,27 +1,39 @@
-# React + TypeScript + Vite
+# Amari Angels POS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web based POS System.
 
-Currently, two official plugins are available:
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Table of Contents
 
-## Expanding the ESLint configuration
+- [About](#about)
+- [Demo](#demo)
+- [Features](#features)
+- [Installation](#installation)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## About
 
-- Configure the top-level `parserOptions` property like this:
+Brief introduction about your project. What problem does it solve? Why is it important? Mention any relevant technologies or frameworks you've used.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+## Demo
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+[live demo](https://amari-pos.vercel.app/)
+
+## Features
+
+List the key features of your web app. You can use bullet points or a table, depending on your preference.
+
+- Overview of all data.
+- Transactions handle transactions directly on the web app.
+- Manage items add, edit, delete items.
+- Monitor stocks, easily track stocks of all items.
+- Monitor transactions,
+
+## Installation
+
+Provide instructions on how to install and set up your project locally. Include any prerequisites, step-by-step instructions, and configuration details.
+
+```bash
+git clone https://github.com/yourusername/project-name.git
+cd project-name
+npm install
