@@ -19,7 +19,10 @@ const HomeCards: React.FC = () => {
     >
       <Card
         sx={(theme) => ({
-          background: theme.colors.blue[0],
+          background:
+            theme.colorScheme === "dark"
+              ? theme.colors.blue[8]
+              : theme.colors.blue[0],
           borderRadius: theme.radius.md,
         })}
       >
@@ -33,7 +36,10 @@ const HomeCards: React.FC = () => {
       </Card>
       <Card
         sx={(theme) => ({
-          background: theme.colors.green[0],
+          background:
+            theme.colorScheme === "dark"
+              ? theme.colors.green[8]
+              : theme.colors.green[0],
           borderRadius: theme.radius.md,
         })}
       >
@@ -47,7 +53,10 @@ const HomeCards: React.FC = () => {
       </Card>
       <Card
         sx={(theme) => ({
-          background: theme.colors.yellow[0],
+          background:
+            theme.colorScheme === "dark"
+              ? theme.colors.yellow[8]
+              : theme.colors.yellow[0],
           borderRadius: theme.radius.md,
         })}
       >
@@ -61,7 +70,10 @@ const HomeCards: React.FC = () => {
       </Card>
       <Card
         sx={(theme) => ({
-          background: theme.colors.pink[0],
+          background:
+            theme.colorScheme === "dark"
+              ? theme.colors.pink[8]
+              : theme.colors.pink[0],
           borderRadius: theme.radius.md,
         })}
       >
