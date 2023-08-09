@@ -6,8 +6,10 @@ import {
   IconBrightness,
   IconLogout2,
 } from "@tabler/icons-react";
+import { useAuth } from "../util/AuthContext";
 
 const AvatarMenu: React.FC = () => {
+  const { handleUserLogout } = useAuth();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const dark = colorScheme === "dark";
   return (
@@ -40,7 +42,9 @@ const AvatarMenu: React.FC = () => {
         >
           {dark ? "Light mode" : "Dark mode"}
         </Menu.Item>
-        <Menu.Item icon={<IconLogout2 size={14} />}>Logout</Menu.Item>
+        <Menu.Item icon={<IconLogout2 size={14} />} onClick={handleUserLogout}>
+          Logout
+        </Menu.Item>
       </Menu.Dropdown>
     </Menu>
   );

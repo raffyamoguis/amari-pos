@@ -8,10 +8,12 @@ import {
   Button,
   Stack,
 } from "@mantine/core";
+import { useAuth } from "../../util/AuthContext";
 
 import Footer from "../../components/footer/Footer";
 
 const Login: React.FC = () => {
+  const { handleUserLogin } = useAuth();
   return (
     <>
       <Flex justify="center" align="center" style={{ height: "100vh" }}>
@@ -27,7 +29,7 @@ const Login: React.FC = () => {
               label="Password"
               placeholder="Enter password"
             />
-            <Button mt={20} fullWidth>
+            <Button mt={20} fullWidth onClick={handleUserLogin}>
               Login
             </Button>
           </Card>
