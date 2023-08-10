@@ -1,0 +1,1 @@
+export const amountShorthand = [1000, 500, 100, 50, 20, 0];
