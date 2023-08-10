@@ -17,7 +17,7 @@ const ListStocks: React.FC = () => {
         <tr>
           <td>Neozep</td>
           <td>
-            <BadgeStock color="green" text="In Stock" />
+            <BadgeStock value={100} />
           </td>
           <td>
             <NumberInput defaultValue={110} maw={100} />
@@ -26,7 +26,7 @@ const ListStocks: React.FC = () => {
         <tr>
           <td>Milk</td>
           <td>
-            <BadgeStock color="red" text="No Stock" />
+            <BadgeStock value={0} />
           </td>
           <td>
             <NumberInput defaultValue={0} maw={100} />
@@ -35,7 +35,7 @@ const ListStocks: React.FC = () => {
         <tr>
           <td>Choco Drink</td>
           <td>
-            <BadgeStock color="yellow" text="Low Stock" />
+            <BadgeStock value={19} />
           </td>
           <td>
             <NumberInput defaultValue={8} maw={100} />
