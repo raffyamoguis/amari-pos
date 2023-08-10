@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import uuid from "react-uuid";
 import { useLocalStorage } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
 
 import Ripple from "../components/ripple/Ripple";
 
@@ -34,26 +36,54 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   });
 
   const getUserOnLoad = () => {
-    setUser({ name: "Raffy", email: "raffyamoguis@gmail.com" });
-
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   };
 
-  const handleUserLogin = async (credentials?: any) => {
+  const handleUserLogin = async (credentials?: {
+    username: string;
+    password: string;
+  }) => {
     setLoggingIn(true);
-    console.log(credentials);
-    setSession(uuid());
-
-    // Fake login
-    setTimeout(() => {
-      setLoggingIn(false);
-    }, 3000);
+    try {
+      const result = await axios.post(
+        "http://localhost:3001/api/login",
+        credentials
+      );
+      const user = result.data.user;
+      if (user.length !== 0) {
+        setUser(user);
+        setTimeout(() => {
+          setLoggingIn(false);
+          setSession(uuid());
+          notifications.show({
+            message: "Welcome.",
+            color: "green",
+          });
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          setLoggingIn(false);
+          notifications.show({
+            message: "Username or password is incorrect.",
+            color: "red",
+          });
+        }, 1000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleUserLogout = async () => {
-    removeSession();
+    setTimeout(() => {
+      removeSession();
+      notifications.show({
+        message: "Successfully log out.",
+        color: "blue",
+      });
+    }, 1000);
   };
 
   const contextData = {
