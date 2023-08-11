@@ -1,14 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 import { Group, Table, TextInput, Flex, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
 import { IconSearch, IconEdit, IconTrash } from "@tabler/icons-react";
 
+import { fetchMedicines } from "../../api/medicine";
+import { MedicineType } from "../../types";
+
 import IconAction from "../IconAction";
 
 const ListMedicine: React.FC = () => {
   const navigate = useNavigate();
+
+  const { data: medicines } = useQuery<MedicineType[], Error>(
+    "medicines",
+    fetchMedicines
+  );
 
   const openDeleteModal = () =>
     modals.openConfirmModal({
@@ -50,27 +59,29 @@ const ListMedicine: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1112</td>
-            <td>Neozep</td>
-            <td>N/A</td>
-            <td>100</td>
-            <td>Jun 20, 2025</td>
-            <td>
-              <Flex>
-                <IconAction
-                  color="green"
-                  icon={<IconEdit size="1.125rem" />}
-                  onClick={() => navigate(`/medicine/${10}`)}
-                />
-                <IconAction
-                  color="red"
-                  icon={<IconTrash size="1.125rem" />}
-                  onClick={openDeleteModal}
-                />
-              </Flex>
-            </td>
-          </tr>
+          {medicines?.map((medicine: MedicineType) => (
+            <tr key={medicine.id}>
+              <td>{medicine.batchno}</td>
+              <td>{medicine.name}</td>
+              <td>{medicine.spefication}</td>
+              <td>{medicine.price}</td>
+              <td>{medicine.expiry}</td>
+              <td>
+                <Flex>
+                  <IconAction
+                    color="green"
+                    icon={<IconEdit size="1.125rem" />}
+                    onClick={() => navigate(`/medicine/${10}`)}
+                  />
+                  <IconAction
+                    color="red"
+                    icon={<IconTrash size="1.125rem" />}
+                    onClick={openDeleteModal}
+                  />
+                </Flex>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </>
