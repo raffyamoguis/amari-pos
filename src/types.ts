@@ -7,11 +7,14 @@ export interface NavTypes {
 }
 
 export interface MedicineType {
+    id: number;
     batchno: string;
     name: string;
     spefication?: number;
     price: number;
-    expiry: string
+    expiry: string;
+    updatedAt?: string;
+    createdAt?: string
 }
 
 export interface TransactionTypes {
@@ -21,4 +24,12 @@ export interface TransactionTypes {
     price: number;
     quantity: number;
     total: number;
+}
+
+export interface PaymentTypes {
+    id: number;
+    amount: number;
+    change: number;
+    overalltotal: number;
+    orderdate: string;
 }
