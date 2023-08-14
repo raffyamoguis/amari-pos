@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { shallow } from "zustand/shallow";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   Text,
   TextInput,
@@ -31,6 +31,7 @@ import { MedicineType } from "../../types";
 import { useTransactionStore } from "../../store/useTransactionStore";
 
 const NewTrans: React.FC = () => {
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState<string>("");
   const [, setQuantity] = useState<number | "">(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -150,18 +151,21 @@ const NewTrans: React.FC = () => {
       });
 
       if (isCreatePaymentSuccessful) {
+        // Invalidate and refetch the 'data' query
+        await queryClient.invalidateQueries("payments");
+
         const isCreateTransactionSuccessful = await createTransactions(
           trans,
           currdate
         );
 
         if (isCreateTransactionSuccessful) {
-          reset();
+          setLoading(false);
           notifications.show({
             message: "Transaction created successfully.",
             color: "green",
           });
-          setLoading(false);
+          reset();
         }
       }
     }
