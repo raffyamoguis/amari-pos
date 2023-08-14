@@ -66,7 +66,7 @@ const TransHistory: React.FC = () => {
           <Center mt={12}>
             <Pagination
               size="sm"
-              total={payments.total / 15}
+              total={Math.ceil(payments.total / 15)}
               siblings={1}
               value={activePage}
               onChange={setActivePage}
