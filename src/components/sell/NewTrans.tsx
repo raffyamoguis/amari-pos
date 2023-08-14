@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { shallow } from "zustand/shallow";
+import { useQuery } from "react-query";
 import {
   Text,
   TextInput,
@@ -10,135 +12,88 @@ import {
   Button,
   Paper,
   ScrollArea,
+  Tooltip,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { IconSearch, IconTrash, IconX } from "@tabler/icons-react";
+import { IconSearch, IconTrash, IconTrashX, IconX } from "@tabler/icons-react";
 import { TransactionTypes } from "../../types";
 import { amountShorthand } from "../../lib/transactions/data";
 import "./searchStyle.css";
-import axios from "axios";
 import BadgeStock from "../BadgeStock";
 
-const API_HOST = import.meta.env.VITE_API_HOST;
+import { searchMedicine } from "../../api/medicine";
+import {
+  createPayment,
+  createTransactions,
+  updateStock,
+} from "../../api/stocks";
+import { MedicineType } from "../../types";
+import { useTransactionStore } from "../../store/useTransactionStore";
 
 const NewTrans: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [, setQuantity] = useState<number | "">(0);
-  const [totalValue, setTotalValue] = useState<number>(0);
-  const [change, setChange] = useState<number>(0);
-  const [amount, setAmount] = useState<number>(0);
-  const [safeToProceed, setSafe] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const [transactions, setTransactions] = useState<TransactionTypes[]>([]);
-  const [products, setProducts] = useState<any>([]);
+  const [
+    totalAmount,
+    safeToProceed,
+    setSafe,
+    amount,
+    setAmount,
+    change,
+    setChange,
+    trans,
+    updateTotal,
+    addTrans,
+    deleteTrans,
+    updateQuantity,
+    reset,
+  ] = useTransactionStore(
+    (state) => [
+      state.totalAmount,
+      state.safeToProceed,
+      state.setSafe,
+      state.amount,
+      state.setAmount,
+      state.change,
+      state.setChange,
+      state.trans,
+      state.updateTotal,
+      state.addTrans,
+      state.deleteTrans,
+      state.updateQuantity,
+      state.reset,
+    ],
+    shallow
+  );
 
-  useEffect(() => {
-    // Fetch data
-    if (search !== "") searchProducts();
-  }, [search]);
-
-  async function searchProducts() {
-    try {
-      const { data } = await axios.get(`${API_HOST}/products?name=${search}`);
-      setProducts(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const { data: searchResult } = useQuery<MedicineType[], Error>(
+    ["search", search],
+    () => searchMedicine(search)
+  );
 
   useEffect(() => {
     // Calculate and update the total value
-    const totalValue = transactions.reduce(
+    const totalValue = trans.reduce(
       (total, transaction) => total + transaction.total,
       0
     );
-    setTotalValue(totalValue);
-  }, [transactions]);
+    const tempChange = amount - totalValue;
+    setSafe(tempChange < 0);
+    updateTotal(totalValue);
 
-  async function addTransaction(product: any) {
-    if (product.quantity !== 0) {
-      //Check for redundancy
-      let redundant = false;
-      const updatedTransactions = transactions.map((transaction) => {
-        if (transaction.product === product.stockfor) {
-          redundant = true;
-
-          // Prevent over adding quantity
-          if (product.quantity > transaction.quantity) {
-            transaction.quantity += 1;
-          }
-
-          // Add quantity instead..
-          return {
-            ...transaction,
-            quantity: transaction.quantity,
-            total: transaction.price * transaction.quantity,
-          };
-        }
-        return transaction;
-      });
-
-      setTransactions(updatedTransactions);
-
-      // Check before adding..
-      if (!redundant) {
-        try {
-          const result = await axios.get(
-            `${API_HOST}/products/${encodeURIComponent(product.stockfor)}`
-          );
-          const medicine = result.data;
-          const price = parseFloat(medicine.price);
-          const transaction = [
-            ...transactions,
-            {
-              id: transactions.length + 1,
-              product: product.stockfor,
-              stock: product.quantity,
-              price: price,
-              quantity: 1,
-              total: price,
-            },
-          ];
-
-          setTransactions(transaction);
-        } catch (error) {
-          console.log(error);
-        }
-      }
+    if (trans.length === 0) {
+      setSafe(true);
+      setChange(0);
+      setAmount(0);
     }
-  }
-
-  function handleQuantityChange(id: number, value: number | "", stock: number) {
-    if (value === "") {
-      // Handle the case where value is an empty string
-    } else {
-      // Handle the case where value is a number
-      if (stock >= value) {
-        const updatedTransactions = transactions.map((transaction) => {
-          if (transaction.id === id) {
-            const newTotal = transaction.price * value;
-            return { ...transaction, quantity: value, total: newTotal };
-          }
-          return transaction;
-        });
-
-        setTransactions(updatedTransactions);
-      }
-    }
-  }
-
-  function handleDelete(id: number) {
-    const updatedTransactions = transactions.filter(
-      (transaction) => transaction.id !== id
-    );
-
-    setTransactions(updatedTransactions);
-  }
+  }, [trans]);
 
   function handleAmountChange(amount: number | "") {
-    if (amount !== "" && totalValue !== 0) {
+    if (amount !== "" && totalAmount !== 0) {
       setAmount(amount);
-      const checkChange = amount - totalValue;
+      const checkChange = amount - totalAmount;
       if (checkChange >= 0) {
         setChange(checkChange);
         setSafe(false);
@@ -146,10 +101,68 @@ const NewTrans: React.FC = () => {
         setSafe(true);
         setChange(0);
         notifications.show({
-          title: "Error",
           message: "Amount should be greater than total.",
           color: "red",
         });
+      }
+    }
+  }
+
+  async function handleProceed() {
+    setLoading(true);
+    const date = new Date();
+    const month = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const currdate =
+      date.getFullYear() +
+      "-" +
+      month[date.getMonth()] +
+      "-" +
+      date.getDate() +
+      " " +
+      date.toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: true,
+      });
+
+    const isUpdateStockSuccessful = await updateStock(trans);
+
+    if (isUpdateStockSuccessful) {
+      const isCreatePaymentSuccessful = await createPayment({
+        overalltotal: totalAmount,
+        amount: amount,
+        change: change,
+        currdate: currdate,
+      });
+
+      if (isCreatePaymentSuccessful) {
+        const isCreateTransactionSuccessful = await createTransactions(
+          trans,
+          currdate
+        );
+
+        if (isCreateTransactionSuccessful) {
+          reset();
+          notifications.show({
+            message: "Transaction created successfully.",
+            color: "green",
+          });
+          setLoading(false);
+        }
       }
     }
   }
@@ -182,8 +195,8 @@ const NewTrans: React.FC = () => {
             })}
           >
             <ScrollArea h={250}>
-              {products.length !== 0 ? (
-                products?.map((product: any) => (
+              {searchResult?.length !== 0 ? (
+                searchResult?.map((product: any) => (
                   <Group
                     key={product.id}
                     position="apart"
@@ -200,7 +213,7 @@ const NewTrans: React.FC = () => {
                           product.quantity > 0 ? "pointer" : "not-allowed",
                       },
                     })}
-                    onClick={() => addTransaction(product)}
+                    onClick={() => addTrans(product)}
                   >
                     <Text fz="sm">{product.stockfor}</Text>
                     <BadgeStock value={product.quantity} />
@@ -215,7 +228,7 @@ const NewTrans: React.FC = () => {
           </Paper>
         )}
       </div>
-      {transactions.length !== 0 && (
+      {trans.length !== 0 && (
         <>
           <Table fontSize="xs">
             <thead>
@@ -229,7 +242,7 @@ const NewTrans: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {transactions.map((transaction: TransactionTypes) => (
+              {trans.map((transaction: TransactionTypes) => (
                 <tr key={transaction.id}>
                   <td>{transaction.product}</td>
                   <td>{transaction.stock}</td>
@@ -240,7 +253,7 @@ const NewTrans: React.FC = () => {
                       value={transaction.quantity}
                       onChange={(newValue) => {
                         setQuantity(newValue); // Update quantity state
-                        handleQuantityChange(
+                        updateQuantity(
                           transaction.id,
                           newValue,
                           transaction.stock
@@ -255,13 +268,23 @@ const NewTrans: React.FC = () => {
                     <ActionIcon
                       color="red"
                       size="sm"
-                      onClick={() => handleDelete(transaction.id)}
+                      onClick={() => deleteTrans(transaction.id)}
                     >
                       <IconTrash size="0.875rem" />
                     </ActionIcon>
                   </td>
                 </tr>
               ))}
+              <tr>
+                <td colSpan={5}></td>
+                <td>
+                  <Tooltip label="Remove all queued items">
+                    <ActionIcon color="red" size="sm" onClick={reset}>
+                      <IconTrashX size="0.875rem" />
+                    </ActionIcon>
+                  </Tooltip>
+                </td>
+              </tr>
             </tbody>
           </Table>
           <Divider />
@@ -271,7 +294,7 @@ const NewTrans: React.FC = () => {
       <Group mt={20} position="right" align="end">
         <NumberInput
           label="Total"
-          value={totalValue}
+          value={totalAmount}
           maw={70}
           hideControls
           disabled
@@ -291,8 +314,9 @@ const NewTrans: React.FC = () => {
           min={0}
         />
         <Button
-          onClick={() => console.log(transactions)}
+          onClick={handleProceed}
           disabled={safeToProceed}
+          loading={loading}
         >
           Proceed
         </Button>
