@@ -33,3 +33,11 @@ export interface PaymentTypes {
     overalltotal: number;
     orderdate: string;
 }
+
+export interface StockTypes {
+    createdAt: string;
+    id:number
+    quantity: number
+    stockfor: string;
+    updatedAt: string;
+}
