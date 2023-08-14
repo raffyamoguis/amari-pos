@@ -9,7 +9,7 @@ export async function updateStock(transactions: TransactionTypes[]): Promise<boo
             const updatedStock = transaction.stock - transaction.quantity;
 
             try {
-                await axios.put(`${API_HOST}/reducestock/${transaction.product}`, {
+                await axios.put(`${API_HOST}/reducestock/${encodeURIComponent(transaction.product)}`, {
                     q: updatedStock
                 });
                 return true; // Return true if update is successful for this transaction
