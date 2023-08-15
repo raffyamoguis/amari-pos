@@ -27,6 +27,14 @@ export interface OtherSupplyTypes {
     updatedAt: string;
 }
 
+export interface StockTypes {
+    id: number;
+    createdAt: string;
+    quantity: number;
+    stockfor: string;
+    updatedAt: string;
+}
+
 export interface TransactionTypes {
     id: number;
     product: string;
