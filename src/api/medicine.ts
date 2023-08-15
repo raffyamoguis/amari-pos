@@ -1,9 +1,9 @@
 import axios from "axios";
 import { API_HOST } from "../config";
 
-export async function fetchMedicines(){
+export async function fetchMedicines(offset: number){
     try {
-        const result = await axios.get(`${API_HOST}/medicine`);
+        const result = await axios.get(`${API_HOST}/medicine?offset=${offset}`);
         return result.data;
     }catch (error) {
         console.log("An error occured on getMedicine func: ",error);

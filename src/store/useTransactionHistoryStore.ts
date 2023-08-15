@@ -10,7 +10,7 @@ type Actions = {
 }
 
 const initialState: State = {
-    activePage: 2,
+    activePage: 1,
     offset: 0
 }
 
