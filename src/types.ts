@@ -17,6 +17,16 @@ export interface MedicineType {
     createdAt?: string
 }
 
+export interface OtherSupplyTypes {
+    createdAt:string;
+    description:string
+    expiry:string;
+    id: number;
+    name:string;
+    price: string;
+    updatedAt: string;
+}
+
 export interface TransactionTypes {
     id: number;
     product: string;
