@@ -3,6 +3,16 @@ import { API_HOST } from "../config";
 import { TransactionTypes } from "../types";
 import { notifications } from "@mantine/notifications";
 
+export async function fetchStocks(offset: number) {
+    try {
+        const result = await axios.get(`${API_HOST}/stock?offset=${offset}`);
+        return result.data;
+    }catch (error) {
+        console.log("An error occured on fetchStocks func: ",error);
+        throw error;
+    }
+}
+
 export async function updateStock(transactions: TransactionTypes[]): Promise<boolean> {
     try {
         const updatePromises = transactions.map(async (transaction: TransactionTypes) => {
