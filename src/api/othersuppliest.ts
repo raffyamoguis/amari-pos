@@ -1,10 +1,15 @@
 import axios from "axios";
 import { API_HOST } from "../config";
 
-export async function fetchOtherSupplies(offset: number) {
+export async function fetchOtherSupplies(offset: number, search: string) {
     try {
-        const result = await axios.get(`${API_HOST}/othersupply?offset=${offset}`);
-        return result.data;
+        if (!!search) {
+            const result = await axios.get(`${API_HOST}/othersupply/search?name=${encodeURIComponent(search)}&offset=${offset}`);
+            return result.data;
+        }else {
+            const result = await axios.get(`${API_HOST}/othersupply?offset=${offset}`);
+            return result.data;
+        }
     }catch(error) {
         console.log("An error occured on fetchOthersupplies func: ",error);
         throw error;
