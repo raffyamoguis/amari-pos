@@ -73,13 +73,13 @@ const ListMedicine: React.FC = () => {
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
       onConfirm: async () => {
-        const isDeleteMedSuccess = await deleteMedicine(id);
+        const delMedicine = await deleteMedicine(id);
 
-        if (isDeleteMedSuccess) {
+        if (!!delMedicine.result) {
           //Remove the stock
-          const isRemoveStockSuccess = await deleteStock(name);
+          const delStock = await deleteStock(name);
 
-          if (isRemoveStockSuccess) {
+          if (!!delStock.result) {
             notifications.show({
               message: "Successfully deleted.",
               color: "success",
