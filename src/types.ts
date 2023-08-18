@@ -1,4 +1,5 @@
 import React from "react";
+import { DateValue } from "@mantine/dates";
 
 export interface NavTypes {
     label: string;
@@ -7,10 +8,10 @@ export interface NavTypes {
 }
 
 export interface MedicineType {
-    id: number;
+    id?: number | undefined;
     batchno: string;
     name: string;
-    spefication?: number;
+    specification?: string;
     price: number;
     expiry: string;
     updatedAt?: string;
