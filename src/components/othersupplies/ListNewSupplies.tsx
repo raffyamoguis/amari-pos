@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { shallow } from "zustand/shallow";
 import {
   Group,
@@ -13,9 +13,13 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { modals } from "@mantine/modals";
-import { IconSearch, IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconSearch, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
 
-import { fetchOtherSupplies } from "../../api/othersuppliest";
+import {
+  fetchOtherSupplies,
+  deleteOtherSupply,
+} from "../../api/othersuppliest";
+import { deleteStock } from "../../api/stocks";
 import { useOtherSuppliesListStore } from "../../store/useOtherSuppliesListStore";
 import { OtherSupplyTypes } from "../../types";
 
@@ -28,22 +32,34 @@ interface Props {
 }
 
 const ListNewSupplies: React.FC = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const [activePage, offset, setActivePage] = useOtherSuppliesListStore(
-    (state) => [state.activePage, state.offset, state.setActivePage],
-    shallow
-  );
+  const [activePage, offset, search, setActivePage, setSearch] =
+    useOtherSuppliesListStore(
+      (state) => [
+        state.activePage,
+        state.offset,
+        state.search,
+        state.setActivePage,
+        state.setSearch,
+      ],
+      shallow
+    );
 
   const { data: othersupplies, isLoading } = useQuery<Props, Error>(
-    ["medicines", offset],
-    () => fetchOtherSupplies(offset),
+    ["othersupplies", offset, search],
+    () => fetchOtherSupplies(offset, search),
     { keepPreviousData: true }
   );
 
-  console.log(othersupplies);
+  useEffect(() => {
+    if (search !== "") {
+      setActivePage(1);
+    }
+  }, [search]);
 
-  const openDeleteModal = () =>
+  const openDeleteModal = (id: number, name: string) =>
     modals.openConfirmModal({
       title: "Confirm delete",
       centered: true,
@@ -56,11 +72,38 @@ const ListNewSupplies: React.FC = () => {
       labels: { confirm: "Delete", cancel: "Cancel" },
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
-      onConfirm: () => {
-        notifications.show({
-          message: "Successfully deleted.",
-          color: "red",
-        });
+      onConfirm: async () => {
+        // Delete the supply
+        const delMedicine = await deleteOtherSupply(id);
+
+        if (!!delMedicine.result) {
+          notifications.show({
+            message: `Successfully deleted ${name}.`,
+            color: "green",
+          });
+          await queryClient.invalidateQueries("othersupplies");
+        } else {
+          notifications.show({
+            message: `There is an error deleting ${name}.`,
+            color: "red",
+          });
+        }
+
+        //Remove the stock
+        const delStock = await deleteStock(name);
+
+        if (!!delStock.result) {
+          notifications.show({
+            message: `Successfully deleted ${name} stocks`,
+            color: "green",
+          });
+          await queryClient.invalidateQueries("stocks");
+        } else {
+          notifications.show({
+            message: `There is an error deleting ${name} stocks.`,
+            color: "red",
+          });
+        }
       },
     });
   return (
@@ -69,6 +112,19 @@ const ListNewSupplies: React.FC = () => {
         <TextInput
           placeholder="Enter supply name"
           icon={<IconSearch size="0.8rem" />}
+          rightSection={
+            search !== "" && (
+              <IconX
+                size="0.8rem"
+                onClick={() => {
+                  setSearch("");
+                  setActivePage(1);
+                }}
+              />
+            )
+          }
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </Group>
       {isLoading ? (
@@ -104,7 +160,9 @@ const ListNewSupplies: React.FC = () => {
                       <IconAction
                         color="red"
                         icon={<IconTrash size="1.125rem" />}
-                        onClick={openDeleteModal}
+                        onClick={() =>
+                          openDeleteModal(othersupply.id, othersupply.name)
+                        }
                       />
                     </Flex>
                   </td>
@@ -115,7 +173,9 @@ const ListNewSupplies: React.FC = () => {
           <Center mt={12}>
             <Pagination
               size="sm"
-              total={Math.ceil(othersupplies?.total / 15)}
+              total={
+                othersupplies?.total ? Math.ceil(othersupplies.total / 15) : 0
+              }
               siblings={1}
               value={activePage}
               onChange={setActivePage}
