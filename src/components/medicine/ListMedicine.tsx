@@ -76,27 +76,32 @@ const ListMedicine: React.FC = () => {
         const delMedicine = await deleteMedicine(id);
 
         if (!!delMedicine.result) {
-          //Remove the stock
-          const delStock = await deleteStock(name);
-
-          if (!!delStock.result) {
-            notifications.show({
-              message: "Successfully deleted.",
-              color: "success",
-            });
-
-            // Invalidate queries
-            await queryClient.invalidateQueries("medicines");
-            await queryClient.invalidateQueries("stocks");
-          } else {
-            notifications.show({
-              message: "There is an error deleting this data.",
-              color: "red",
-            });
-          }
+          notifications.show({
+            message: `Successfully deleted ${name}.`,
+            color: "green",
+          });
+          await queryClient.invalidateQueries("medicines");
         } else {
           notifications.show({
-            message: "There is an error deleting this data.",
+            message: `There is an error deleting ${name} data.`,
+            color: "red",
+          });
+        }
+
+        //Remove the stock
+        const delStock = await deleteStock(name);
+
+        if (!!delStock.result) {
+          notifications.show({
+            message: `Successfully deleted ${name} stocks.`,
+            color: "green",
+          });
+
+          // Invalidate queries
+          await queryClient.invalidateQueries("stocks");
+        } else {
+          notifications.show({
+            message: `There is an error deleting ${name} stocks.`,
             color: "red",
           });
         }
