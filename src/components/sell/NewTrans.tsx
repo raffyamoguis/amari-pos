@@ -25,7 +25,7 @@ import { searchMedicine } from "../../api/medicine";
 import {
   createPayment,
   createTransactions,
-  updateStock,
+  updateStocks,
 } from "../../api/stocks";
 import { MedicineType } from "../../types";
 import { useTransactionStore } from "../../store/useTransactionStore";
@@ -140,7 +140,7 @@ const NewTrans: React.FC = () => {
         hour12: true,
       });
 
-    const isUpdateStockSuccessful = await updateStock(trans);
+    const isUpdateStockSuccessful = await updateStocks(trans);
 
     if (isUpdateStockSuccessful) {
       const isCreatePaymentSuccessful = await createPayment({
