@@ -3,6 +3,16 @@ import { API_HOST } from "../config";
 import { TransactionTypes } from "../types";
 import { notifications } from "@mantine/notifications";
 
+export async function createStock(stockfor: string) {
+    try {
+    await axios.post(`${API_HOST}/stock`, { stockfor: stockfor, quantity: 0});
+    return true; // Return true if the query is successful
+  } catch (error) {
+    console.log("An error occurred in addMedicine function:", error);
+    return false; // Return false if the query is unsuccessful
+  }
+}
+
 export async function fetchStocks(offset: number) {
     try {
         const result = await axios.get(`${API_HOST}/stock?offset=${offset}`);
@@ -13,7 +23,18 @@ export async function fetchStocks(offset: number) {
     }
 }
 
-export async function updateStock(transactions: TransactionTypes[]): Promise<boolean> {
+export async function updateStock(name: string, newName: string) {
+    try {
+        const result = await axios.put(`${API_HOST}/edit/stock/${name}`, { newname: newName });
+        return result.data;
+    }catch (error) {
+        console.log("An error occured on updateStock func: ", error);
+        throw error;
+    }
+}
+
+// Update all batch stocks
+export async function updateStocks(transactions: TransactionTypes[]): Promise<boolean> {
     try {
         const updatePromises = transactions.map(async (transaction: TransactionTypes) => {
             const updatedStock = transaction.stock - transaction.quantity;
@@ -39,6 +60,16 @@ export async function updateStock(transactions: TransactionTypes[]): Promise<boo
     } catch (error) {
         console.error('An error occurred while updating stock:', error);
         throw error; // Re-throw the error after logging
+    }
+}
+
+export async function deleteStock(name:string) {
+    try {
+        await axios.delete(`${API_HOST}/stockn/${name}`);
+        return true;
+    }catch(error) {
+        console.log("An error occured while deleting stock: ", error);
+        return false;
     }
 }
 
