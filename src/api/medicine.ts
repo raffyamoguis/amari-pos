@@ -89,10 +89,20 @@ export async function checkMedicine(name: string) {
 
 export async function deleteMedicine(id: number | undefined) {
     try {
-        await axios.delete(`${API_HOST}/medicine/${id}`);
-        return true;
+        const result = await axios.delete(`${API_HOST}/medicine/${id}`);
+        return result.data;
     }catch (error) {
         console.log("An error occurred in deleteMedicine function:", error);
-        return false; // Return false if the query is unsuccessful
+        throw error; // Return false if the query is unsuccessful
+  }
+}
+
+export async function deleteMedicineByName(name: string) {
+  try {
+    const result = await axios.delete(`${API_HOST}/medicine/delete/${encodeURIComponent(name)}`);
+    return result.data;
+  }catch (error) {
+    console.log("An error occurred in deleteMedicineByName function:", error);
+    throw error;
   }
 }
