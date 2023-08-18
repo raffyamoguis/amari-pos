@@ -38,6 +38,18 @@ export async function updateStock(name: string, newName: string) {
     }
 }
 
+export async function updateStockQuantity(id: number | string, quantity: number | "") {
+    try {
+        await axios.put(`${API_HOST}/stock/${encodeURIComponent(id)}`, {
+            quantity: quantity
+        })
+        return true;
+    }catch (error) {
+        console.log("An error occured on updateStockQuantity func: ", error);
+        throw error;
+    }
+}
+
 // Update all batch stocks
 export async function updateStocks(transactions: TransactionTypes[]): Promise<boolean> {
     try {
@@ -70,11 +82,11 @@ export async function updateStocks(transactions: TransactionTypes[]): Promise<bo
 
 export async function deleteStock(name:string) {
     try {
-        await axios.delete(`${API_HOST}/stockn/${name}`);
-        return true;
+        const result = await axios.delete(`${API_HOST}/stockn/${name}`);
+        return result.data;
     }catch(error) {
         console.log("An error occured while deleting stock: ", error);
-        return false;
+        throw error;
     }
 }
 
@@ -120,6 +132,16 @@ export async function createTransactions(transactions: TransactionTypes[], currd
 
         // Handle error display or reporting here if needed
         return false; // An error occurred during requests
+    }
+}
+
+export async function checkType(name: string) {
+    try {
+        const result = await axios.get(`${API_HOST}/check/type/${encodeURIComponent(name)}`);
+        return result.data;
+    }catch (error) {
+        console.error('An error occurred while checking type: ', error);
+        throw error;
     }
 }
 
