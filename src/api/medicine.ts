@@ -37,10 +37,16 @@ export async function updateMedicine(id: string | undefined, medicine : any) {
   }
 }
 
-export async function fetchMedicines(offset: number){
+export async function fetchMedicines(offset: number, search: string){
     try {
+      if (search !== "") {
+        const result = await axios.get(`${API_HOST}/medicine/search/find?name=${encodeURIComponent(search)}&offset=${encodeURIComponent(offset)}`);
+        return result.data;
+      }else {
         const result = await axios.get(`${API_HOST}/medicine?offset=${offset}`);
         return result.data;
+      }
+        
     }catch (error) {
         console.log("An error occured on getMedicine func: ",error);
         throw error;
