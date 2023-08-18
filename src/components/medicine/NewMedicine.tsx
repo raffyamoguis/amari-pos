@@ -1,34 +1,122 @@
-import React from "react";
+import React, { useState } from "react";
+import { useQueryClient } from "react-query";
 import { Text, Group, TextInput, NumberInput, Button } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { DateInput } from "@mantine/dates";
+import { useForm } from "@mantine/form";
+import { format } from "date-fns";
+
+import { addMedicine, checkMedicine } from "../../api/medicine";
+import { createStock } from "../../api/stocks";
 
 const NewMedicine: React.FC = () => {
+  const queryClient = useQueryClient();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const form = useForm({
+    initialValues: {
+      batchno: "",
+      name: "",
+      specification: "",
+      expiry: "",
+      price: "",
+    },
+
+    validate: {
+      name: (value) => (value.length === 0 ? "Name is required" : null),
+      price: (value) => {
+        if (value.length === 0) {
+          return "Price is required";
+        }
+        return null;
+      },
+    },
+  });
+
+  async function handleAddMedicine(medicine: any) {
+    // Set the loading
+    setLoading(true);
+
+    let newExpiry;
+    if (medicine.expiry !== "") {
+      const expiry = new Date(medicine.expiry);
+      newExpiry = format(expiry, "yyyy-MMMM-dd");
+    }
+
+    const newMedicine = {
+      batchno: medicine.batchno,
+      name: medicine.name,
+      specification: medicine.specification,
+      expiry: newExpiry,
+      price: medicine.price,
+    };
+
+    const resCheckMedicine = await checkMedicine(medicine.name);
+
+    if (resCheckMedicine.isRedundant) {
+      notifications.show({
+        message: `${medicine.name} is already present update the stock instead.`,
+        color: "yellow",
+      });
+      setLoading(false);
+    } else {
+      const isAddMedicineSuccess = await addMedicine(newMedicine);
+
+      if (isAddMedicineSuccess) {
+        const isAddStockSuccess = await createStock(medicine.name);
+
+        if (isAddStockSuccess) {
+          notifications.show({
+            message: "Medicine successfully added.",
+            color: "green",
+          });
+          setLoading(false);
+          await queryClient.invalidateQueries("medicines");
+          await queryClient.invalidateQueries("stocks");
+          form.reset();
+        }
+      }
+    }
+  }
   return (
     <>
       <Text mb={4}>Add new medicine</Text>
-      <Group align="end">
-        <TextInput placeholder="Enter batch no" maw={140} />
-        <TextInput placeholder="Enter name" maw={180} />
-        <TextInput placeholder="Enter specification" maw={200} />
-        <DateInput
-          valueFormat="YYYY MMM DD"
-          placeholder="Set expiry date"
-          maw={140}
-          clearable
-        />
-        <NumberInput placeholder="Enter price" maw={130} />
-        <Button
-          onClick={() =>
-            notifications.show({
-              message: "Successfully added.",
-              color: "blue",
-            })
-          }
-        >
-          Add
-        </Button>
-      </Group>
+      <form onSubmit={form.onSubmit((values) => handleAddMedicine(values))}>
+        <Group align="start">
+          <TextInput
+            placeholder="Enter batch no"
+            maw={140}
+            {...form.getInputProps("batchno")}
+          />
+          <TextInput
+            placeholder="Enter name"
+            maw={180}
+            {...form.getInputProps("name")}
+          />
+          <TextInput
+            placeholder="Enter specification"
+            maw={200}
+            {...form.getInputProps("specification")}
+          />
+          <DateInput
+            valueFormat="YYYY-MMMM-DD"
+            placeholder="Set expiry date"
+            maw={200}
+            clearable
+            {...form.getInputProps("expiry")}
+          />
+          <NumberInput
+            placeholder="Enter price"
+            maw={130}
+            precision={2}
+            min={1}
+            {...form.getInputProps("price")}
+          />
+          <Button type="submit" loading={loading}>
+            Add
+          </Button>
+        </Group>
+      </form>
     </>
   );
 };
