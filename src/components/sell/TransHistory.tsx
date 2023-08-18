@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { shallow } from "zustand/shallow";
-import { Table, Text, Pagination, Center } from "@mantine/core";
+import { Table, Text, Pagination, Center, Group } from "@mantine/core";
 
 import SkeletonTable from "../skeleton/SkeletonTable";
 
@@ -38,7 +38,15 @@ const TransHistory: React.FC = () => {
 
   return (
     <>
-      <Text mb={10}>Transaction History</Text>
+      <Group position="apart" align="center" mt={20}>
+        <Text mb={10}>Transaction History</Text>
+        <Text fz="xs">
+          <Text component="span" fw={700}>
+            Total:
+          </Text>{" "}
+          {payments?.total}
+        </Text>
+      </Group>
       {isLoading ? (
         <SkeletonTable />
       ) : isSuccess ? (

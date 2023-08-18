@@ -1,7 +1,14 @@
 import React, { useEffect } from "react";
 import { shallow } from "zustand/shallow";
 import { useQuery, useQueryClient } from "react-query";
-import { Table, NumberInput, Center, Pagination, Text } from "@mantine/core";
+import {
+  Table,
+  NumberInput,
+  Center,
+  Pagination,
+  Text,
+  Group,
+} from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { modals } from "@mantine/modals";
 import { IconTrash } from "@tabler/icons-react";
@@ -158,43 +165,57 @@ const ListStocks: React.FC = () => {
               <Text fz="sm">No results..</Text>
             </Center>
           ) : (
-            <Table mt={10} fontSize="xs">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Status</th>
-                  <th>Quantity</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stocks?.items.map((stock: StockTypes) => (
-                  <tr key={stock.id}>
-                    <td>{stock.stockfor}</td>
-                    <td>
-                      <BadgeStock value={stock.quantity} />
-                    </td>
-                    <td>
-                      <NumberInput
-                        value={stock.quantity}
-                        maw={100}
-                        min={0}
-                        onChange={(value) =>
-                          handleQuantityChange(stock.id, value, stock.stockfor)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <IconAction
-                        color="red"
-                        icon={<IconTrash size="1.125rem" />}
-                        onClick={() => openDeleteModal(stock.stockfor)}
-                      />
-                    </td>
+            <>
+              <Group position="right">
+                <Text fz="xs">
+                  <Text component="span" fw={700}>
+                    Total:
+                  </Text>{" "}
+                  {stocks?.total}
+                </Text>
+              </Group>
+              <Table mt={10} fontSize="xs">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {stocks?.items.map((stock: StockTypes) => (
+                    <tr key={stock.id}>
+                      <td>{stock.stockfor}</td>
+                      <td>
+                        <BadgeStock value={stock.quantity} />
+                      </td>
+                      <td>
+                        <NumberInput
+                          value={stock.quantity}
+                          maw={100}
+                          min={0}
+                          onChange={(value) =>
+                            handleQuantityChange(
+                              stock.id,
+                              value,
+                              stock.stockfor
+                            )
+                          }
+                        />
+                      </td>
+                      <td>
+                        <IconAction
+                          color="red"
+                          icon={<IconTrash size="1.125rem" />}
+                          onClick={() => openDeleteModal(stock.stockfor)}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </>
           )}
           <Center mt={12}>
             <Pagination

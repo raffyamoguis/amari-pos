@@ -132,51 +132,61 @@ const ListMedicine: React.FC = () => {
         <SkeletonTable />
       ) : (
         <>
+          <Group position="right">
+            <Text fz="xs">
+              <Text component="span" fw={700}>
+                Total:
+              </Text>{" "}
+              {medicines?.total}
+            </Text>
+          </Group>
           {medicines?.total === 0 ? (
             <Center mt={20}>
               <Text fz="sm">No results..</Text>
             </Center>
           ) : (
-            <Table fontSize="xs">
-              <thead>
-                <tr>
-                  <th>Batch no</th>
-                  <th>Name</th>
-                  <th>Specification</th>
-                  <th>Price</th>
-                  <th>Expiry</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {medicines?.items.map((medicine: MedicineType) => (
-                  <tr key={medicine.id}>
-                    <td>{medicine.batchno}</td>
-                    <td>{medicine.name}</td>
-                    <td>{medicine.specification}</td>
-                    <td>{medicine.price}</td>
-                    <td>{medicine.expiry}</td>
-                    <td>
-                      <Flex>
-                        <IconAction
-                          color="green"
-                          icon={<IconEdit size="1.125rem" />}
-                          onClick={() => navigate(`/medicine/${medicine.id}`)}
-                        />
-
-                        <IconAction
-                          color="red"
-                          icon={<IconTrash size="1.125rem" />}
-                          onClick={() =>
-                            openDeleteModal(medicine?.id, medicine.name)
-                          }
-                        />
-                      </Flex>
-                    </td>
+            <>
+              <Table fontSize="xs">
+                <thead>
+                  <tr>
+                    <th>Batch no</th>
+                    <th>Name</th>
+                    <th>Specification</th>
+                    <th>Price</th>
+                    <th>Expiry</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {medicines?.items.map((medicine: MedicineType) => (
+                    <tr key={medicine.id}>
+                      <td>{medicine.batchno}</td>
+                      <td>{medicine.name}</td>
+                      <td>{medicine.specification}</td>
+                      <td>{medicine.price}</td>
+                      <td>{medicine.expiry}</td>
+                      <td>
+                        <Flex>
+                          <IconAction
+                            color="green"
+                            icon={<IconEdit size="1.125rem" />}
+                            onClick={() => navigate(`/medicine/${medicine.id}`)}
+                          />
+
+                          <IconAction
+                            color="red"
+                            icon={<IconTrash size="1.125rem" />}
+                            onClick={() =>
+                              openDeleteModal(medicine?.id, medicine.name)
+                            }
+                          />
+                        </Flex>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </>
           )}
 
           <Center mt={12}>

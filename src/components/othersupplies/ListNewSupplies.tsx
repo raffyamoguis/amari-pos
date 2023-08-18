@@ -131,6 +131,14 @@ const ListNewSupplies: React.FC = () => {
         <SkeletonTable />
       ) : (
         <>
+          <Group position="right">
+            <Text fz="xs">
+              <Text component="span" fw={700}>
+                Total:
+              </Text>{" "}
+              {othersupplies?.total}
+            </Text>
+          </Group>
           <Table fontSize="xs">
             <thead>
               <tr>
