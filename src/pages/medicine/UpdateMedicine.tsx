@@ -83,6 +83,10 @@ const UpdateMedicine: React.FC = () => {
       newExpiry = format(expiry, "yyyy-MMMM-dd");
     }
 
+    if (values.expiry === null) {
+      newExpiry = "";
+    }
+
     const isUpdateMedSuccess = await updateMedicine(id, {
       batchno: values.batchno,
       name: values.name,
