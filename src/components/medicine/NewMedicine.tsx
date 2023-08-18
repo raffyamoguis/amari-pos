@@ -45,7 +45,7 @@ const NewMedicine: React.FC = () => {
 
     const newMedicine = {
       batchno: medicine.batchno,
-      name: medicine.name,
+      name: medicine.name.trim(),
       specification: medicine.specification,
       expiry: newExpiry,
       price: medicine.price,
@@ -63,7 +63,7 @@ const NewMedicine: React.FC = () => {
       const isAddMedicineSuccess = await addMedicine(newMedicine);
 
       if (isAddMedicineSuccess) {
-        const isAddStockSuccess = await createStock(medicine.name);
+        const isAddStockSuccess = await createStock(medicine.name.trim());
 
         if (isAddStockSuccess) {
           notifications.show({
