@@ -13,10 +13,15 @@ export async function createStock(stockfor: string) {
   }
 }
 
-export async function fetchStocks(offset: number) {
+export async function fetchStocks(offset: number, search : string) {
     try {
-        const result = await axios.get(`${API_HOST}/stock?offset=${offset}`);
-        return result.data;
+        if (search !== "") {
+            const result = await axios.get(`${API_HOST}/stock/search?name=${search}&offset=${offset}`);
+            return result.data;
+        }else {
+            const result = await axios.get(`${API_HOST}/stock?offset=${offset}`);
+            return result.data;
+        }
     }catch (error) {
         console.log("An error occured on fetchStocks func: ",error);
         throw error;
