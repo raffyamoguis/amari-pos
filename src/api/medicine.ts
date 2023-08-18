@@ -81,7 +81,7 @@ export async function checkMedicine(name: string) {
     }
 }
 
-export async function deleteMedicine(id: number) {
+export async function deleteMedicine(id: number | undefined) {
     try {
         await axios.delete(`${API_HOST}/medicine/${id}`);
         return true;
