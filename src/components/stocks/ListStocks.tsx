@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { shallow } from "zustand/shallow";
-import { useQuery } from "react-query";
-import { Table, NumberInput, Center, Pagination } from "@mantine/core";
+import { useQuery, useQueryClient } from "react-query";
+import { Table, NumberInput, Center, Pagination, Text } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { modals } from "@mantine/modals";
+import { IconTrash } from "@tabler/icons-react";
 
-import { fetchStocks } from "../../api/stocks";
+import {
+  fetchStocks,
+  updateStockQuantity,
+  deleteStock,
+  checkType,
+} from "../../api/stocks";
+import { deleteMedicine } from "../../api/medicine";
+import { deleteOtherSupply } from "../../api/othersuppliest";
 import { useStockListStore } from "../../store/useStockListStore";
 import { StockTypes } from "../../types";
 
 import BadgeStock from "../BadgeStock";
 import SkeletonTable from "../skeleton/SkeletonTable";
+import IconAction from "../IconAction";
 
 interface Props {
   total: number;
@@ -16,16 +27,125 @@ interface Props {
 }
 
 const ListStocks: React.FC = () => {
-  const [activePage, offset, setActivePage] = useStockListStore(
-    (state) => [state.activePage, state.offset, state.setActivePage],
+  const queryClient = useQueryClient();
+  const [activePage, offset, search, setActivePage] = useStockListStore(
+    (state) => [
+      state.activePage,
+      state.offset,
+      state.search,
+      state.setActivePage,
+    ],
     shallow
   );
 
   const { data: stocks, isLoading } = useQuery<Props, Error>(
-    ["medicines", offset],
-    () => fetchStocks(offset),
+    ["stocks", offset, search],
+    () => fetchStocks(offset, search),
     { keepPreviousData: true }
   );
+
+  useEffect(() => {
+    if (search !== "") {
+      setActivePage(1);
+    }
+  }, [search]);
+
+  async function handleQuantityChange(
+    id: number,
+    value: number | "",
+    name: string
+  ) {
+    const isUpdateStockQuantitySuccess = await updateStockQuantity(
+      id,
+      value !== "" ? value : 0
+    );
+    if (isUpdateStockQuantitySuccess) {
+      notifications.show({
+        message: `${name} updated quantity.`,
+        color: "green",
+      });
+      await queryClient.invalidateQueries("stocks");
+    } else {
+      notifications.show({
+        message: `There is an error updating quantity of ${name}.`,
+        color: "red",
+      });
+    }
+  }
+
+  const openDeleteModal = (name: string) =>
+    modals.openConfirmModal({
+      title: "Confirm delete",
+      centered: true,
+      children: (
+        <Text size="sm">
+          Are you sure you want to delete{" "}
+          <Text component="span" fw={700}>
+            {name}
+          </Text>
+          ? All of its data associated with the system will also be deleted.
+        </Text>
+      ),
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: async () => {
+        const delStock = await deleteStock(name);
+
+        if (!!delStock.result) {
+          notifications.show({
+            message: `Successfully deleted ${name}.`,
+            color: "green",
+          });
+          await queryClient.invalidateQueries("stocks");
+        } else {
+          notifications.show({
+            message: `Error deleting ${name}.`,
+            color: "red",
+          });
+        }
+
+        const result = await checkType(name);
+
+        if (result.type === "medicine") {
+          // Delete medicine
+          const medicine = result.item;
+          const delMedicine = await deleteMedicine(medicine.id);
+
+          if (!!delMedicine.result) {
+            notifications.show({
+              message: `Successfully deleted ${name}. on medicine`,
+              color: "green",
+            });
+            await queryClient.invalidateQueries("medicines");
+          } else {
+            notifications.show({
+              message: `Error deleting ${name}. on medicine`,
+              color: "red",
+            });
+          }
+        }
+
+        if (result.type === "othersupplies") {
+          // Delete other supplies
+          const other = result.item;
+          const delOtherSupply = await deleteOtherSupply(other.id);
+
+          if (!!delOtherSupply.result) {
+            notifications.show({
+              message: `Successfully deleted ${name}. on othersupply`,
+              color: "green",
+            });
+            await queryClient.invalidateQueries("stocks");
+          } else {
+            notifications.show({
+              message: `Error deleting ${name}. on othersupply`,
+              color: "red",
+            });
+          }
+        }
+      },
+    });
 
   return (
     <>
@@ -33,32 +153,53 @@ const ListStocks: React.FC = () => {
         <SkeletonTable />
       ) : (
         <>
-          <Table mt={10} fontSize="xs">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Status</th>
-                <th>Quantity</th>
-              </tr>
-            </thead>
-            <tbody>
-              {stocks?.items.map((stock: StockTypes) => (
-                <tr key={stock.id}>
-                  <td>{stock.stockfor}</td>
-                  <td>
-                    <BadgeStock value={stock.quantity} />
-                  </td>
-                  <td>
-                    <NumberInput value={stock.quantity} maw={100} />
-                  </td>
+          {stocks?.total === 0 ? (
+            <Center mt={20}>
+              <Text fz="sm">No results..</Text>
+            </Center>
+          ) : (
+            <Table mt={10} fontSize="xs">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Quantity</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {stocks?.items.map((stock: StockTypes) => (
+                  <tr key={stock.id}>
+                    <td>{stock.stockfor}</td>
+                    <td>
+                      <BadgeStock value={stock.quantity} />
+                    </td>
+                    <td>
+                      <NumberInput
+                        value={stock.quantity}
+                        maw={100}
+                        min={0}
+                        onChange={(value) =>
+                          handleQuantityChange(stock.id, value, stock.stockfor)
+                        }
+                      />
+                    </td>
+                    <td>
+                      <IconAction
+                        color="red"
+                        icon={<IconTrash size="1.125rem" />}
+                        onClick={() => openDeleteModal(stock.stockfor)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
           <Center mt={12}>
             <Pagination
               size="sm"
-              total={Math.ceil(stocks?.total / 15)}
+              total={stocks?.total ? Math.ceil(stocks.total / 15) : 0}
               siblings={1}
               value={activePage}
               onChange={setActivePage}
