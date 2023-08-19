@@ -218,7 +218,7 @@ const ListStocks: React.FC = () => {
                       </td>
                       <td>
                         <NumberInput
-                          value={stock.quantity}
+                          value={!!stock.quantity ? stock.quantity : 0}
                           maw={100}
                           min={0}
                           onChange={(value) =>
