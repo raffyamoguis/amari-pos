@@ -1,4 +1,5 @@
 import React from "react";
+import { useQuery } from "react-query";
 import { Card, SimpleGrid, Group, Text } from "@mantine/core";
 import {
   IconActivityHeartbeat,
@@ -7,9 +8,20 @@ import {
   IconBrandDeliveroo,
 } from "@tabler/icons-react";
 
+import { getTotalTransactionToday } from "../../api/payments";
+import { getAddedToday, getSalesToday } from "../../api/home";
+
 const HomeCards: React.FC = () => {
+  const { data: totalTransactionToday } = useQuery(
+    "totaltrans",
+    getTotalTransactionToday
+  );
+
+  const { data: addedToday } = useQuery("addedToday", getAddedToday);
+  const { data: salesToday } = useQuery("salesToday", getSalesToday);
   return (
     <SimpleGrid
+      mt={40}
       cols={4}
       breakpoints={[
         { maxWidth: "lg", cols: 3, spacing: "md" },
@@ -31,7 +43,7 @@ const HomeCards: React.FC = () => {
           <IconActivityHeartbeat />
         </Group>
         <Text ta="center" fz={50} fw="bold">
-          +500
+          +{totalTransactionToday?.length}
         </Text>
       </Card>
       <Card
@@ -48,7 +60,7 @@ const HomeCards: React.FC = () => {
           <IconReportMoney />
         </Group>
         <Text ta="center" fz={50} fw="bold">
-          ₱1700
+          ₱{salesToday?.sales}
         </Text>
       </Card>
       <Card
@@ -65,7 +77,7 @@ const HomeCards: React.FC = () => {
           <IconFirstAidKit />
         </Group>
         <Text ta="center" fz={50} fw="bold">
-          +50
+          +{addedToday?.medicineTotal}
         </Text>
       </Card>
       <Card
@@ -82,7 +94,7 @@ const HomeCards: React.FC = () => {
           <IconBrandDeliveroo />
         </Group>
         <Text ta="center" fz={50} fw="bold">
-          +10
+          +{addedToday?.otherSuppliesTotal}
         </Text>
       </Card>
     </SimpleGrid>

@@ -16,7 +16,7 @@ export async function createStock(stockfor: string) {
 export async function fetchStocks(offset: number, search : string) {
     try {
         if (search !== "") {
-            const result = await axios.get(`${API_HOST}/stock/search?name=${search}&offset=${offset}`);
+            const result = await axios.get(`${API_HOST}/stock/search?name=${encodeURIComponent(search)}&offset=${offset}`);
             return result.data;
         }else {
             const result = await axios.get(`${API_HOST}/stock?offset=${offset}`);

@@ -1,7 +1,16 @@
 import React from "react";
+import { useQuery } from "react-query";
 import { Card, Text, Center, RingProgress, Group, Stack } from "@mantine/core";
+import {
+  IconBuildingStore,
+  IconMedicineSyrup,
+  IconBrandDeliveroo,
+} from "@tabler/icons-react";
+import { getAllTotal } from "../../api/home";
 
 const TotalItems: React.FC = () => {
+  const { data: total } = useQuery("allTotal", getAllTotal);
+
   return (
     <Card
       mih={300}
@@ -15,37 +24,71 @@ const TotalItems: React.FC = () => {
     >
       <Text fw={700}>Total Items</Text>
 
-      <Center mt={10}>
+      <Group position="center" mt={10}>
         <RingProgress
-          size={150}
-          thickness={14}
           label={
-            <Center>
+            <Center mt={4}>
               <Text fz="xl" fw={700}>
-                70
+                <IconBuildingStore size="2rem" />
               </Text>
             </Center>
           }
           roundCaps
           sections={[
-            { value: 40, color: "cyan", tooltip: "Transactions" },
-            { value: 15, color: "orange", tooltip: "Medicine" },
-            { value: 15, color: "grape", tooltip: "Others" },
+            {
+              value: total?.transactionsTotal,
+              color: "cyan",
+              tooltip: "Transactions",
+            },
           ]}
         />
-      </Center>
+        <RingProgress
+          label={
+            <Center mt={4}>
+              <Text fz="xl" fw={700}>
+                <IconMedicineSyrup size="2rem" />
+              </Text>
+            </Center>
+          }
+          roundCaps
+          sections={[
+            {
+              value: total?.medicineTotal,
+              color: "red",
+              tooltip: "Medicine",
+            },
+          ]}
+        />
+        <RingProgress
+          label={
+            <Center mt={4}>
+              <Text fz="xl" fw={700}>
+                <IconBrandDeliveroo size="2rem" />
+              </Text>
+            </Center>
+          }
+          roundCaps
+          sections={[
+            {
+              value: total?.otherSuppliesTotal,
+              color: "grape",
+              tooltip: "Others",
+            },
+          ]}
+        />
+      </Group>
 
       <Group mt={10} position="apart" spacing={0}>
         <Stack spacing={0} align="center">
-          <Text fw={700}>40</Text>
+          <Text fw={700}>{total?.transactionsTotal}</Text>
           <Text color="cyan">Transactions</Text>
         </Stack>
         <Stack spacing={0} align="center">
-          <Text fw={700}>15</Text>
-          <Text color="orange">Medicine</Text>
+          <Text fw={700}>{total?.medicineTotal}</Text>
+          <Text color="red">Medicine</Text>
         </Stack>
         <Stack spacing={0} align="center">
-          <Text fw={700}>15</Text>
+          <Text fw={700}>{total?.otherSuppliesTotal}</Text>
           <Text color="grape">Others</Text>
         </Stack>
       </Group>

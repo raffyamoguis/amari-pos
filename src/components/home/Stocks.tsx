@@ -1,9 +1,12 @@
 import React from "react";
-import { Card, Text, Group, Select, Table, NumberInput } from "@mantine/core";
-
-import BadgeStock from "../BadgeStock";
+import { useQuery } from "react-query";
+import { Card, Text, SimpleGrid } from "@mantine/core";
+import { fetchFilteredStocks } from "../../api/home";
 
 const Stocks: React.FC = () => {
+  const { data } = useQuery("filteredStocks", fetchFilteredStocks);
+
+  console.log(data);
   return (
     <Card
       mih={300}
@@ -15,61 +18,9 @@ const Stocks: React.FC = () => {
         borderRadius: theme.radius.md,
       })}
     >
-      <Group position="apart">
-        <Text fw={700}>Stocks</Text>
-        <Select
-          maw={150}
-          variant="filled"
-          placeholder="Filter"
-          data={[
-            { value: "react", label: "Low Stock" },
-            { value: "ng", label: "No Stock" },
-          ]}
-        />
-      </Group>
+      <Text fw={700}>Stocks</Text>
 
-      <Table mt={10} fontSize="xs">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Neozep</td>
-            <td>
-              <BadgeStock color="green" text="In Stock" />
-            </td>
-            <td>
-              <NumberInput defaultValue={110} maw={90} />
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Milk</td>
-            <td>
-              <BadgeStock color="red" text="No Stock" />
-            </td>
-            <td>
-              <NumberInput defaultValue={0} maw={90} />
-            </td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Choco Drink</td>
-            <td>
-              <BadgeStock color="yellow" text="Low Stock" />
-            </td>
-            <td>
-              <NumberInput defaultValue={8} maw={90} />
-            </td>
-          </tr>
-        </tbody>
-      </Table>
+      <SimpleGrid mt={30} cols={2}></SimpleGrid>
     </Card>
   );
 };

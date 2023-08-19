@@ -1,9 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { shallow } from "zustand/shallow";
 import { Table, Text, Pagination, Center, Group } from "@mantine/core";
+import { IconEye } from "@tabler/icons-react";
 
 import SkeletonTable from "../skeleton/SkeletonTable";
+import IconAction from "../IconAction";
 
 import { PaymentTypes } from "../../types";
 import { fetchPayments } from "../../api/payments";
@@ -15,6 +18,7 @@ interface Props {
 }
 
 const TransHistory: React.FC = () => {
+  const navigate = useNavigate();
   const [activePage, offset, setActivePage] = useTransactionHistoryStore(
     (state) => [state.activePage, state.offset, state.setActivePage],
     shallow
@@ -58,6 +62,7 @@ const TransHistory: React.FC = () => {
                 <th>Total</th>
                 <th>Amount</th>
                 <th>Change</th>
+                <th>View</th>
               </tr>
             </thead>
             <tbody>
@@ -67,6 +72,15 @@ const TransHistory: React.FC = () => {
                   <td>{transaction.overalltotal}</td>
                   <td>{transaction.amount}</td>
                   <td>{transaction.change}</td>
+                  <td>
+                    <IconAction
+                      color="blue"
+                      icon={<IconEye />}
+                      onClick={() =>
+                        navigate(`/request/${transaction.orderdate}`)
+                      }
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>

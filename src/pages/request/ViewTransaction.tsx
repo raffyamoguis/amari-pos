@@ -1,15 +1,18 @@
 import React from "react";
+import { useQuery } from "react-query";
 import { useParams, useNavigate } from "react-router-dom";
-import { Flex, Text, Table, Stack } from "@mantine/core";
+import { Flex, Text, Table, Group } from "@mantine/core";
 import { IconChevronLeft } from "@tabler/icons-react";
 
 import IconAction from "../../components/IconAction";
 
+import { viewTransactionInfo } from "../../api/payments";
+
 const ViewTransaction: React.FC = () => {
   const navigate = useNavigate();
-  const params = useParams();
+  const { id } = useParams();
 
-  console.log(params.id);
+  const { data } = useQuery("transactions", () => viewTransactionInfo(id));
   return (
     <>
       <Flex align="center">
@@ -22,18 +25,41 @@ const ViewTransaction: React.FC = () => {
         <Text>Transaction Info</Text>
       </Flex>
 
-      <Flex justify="flex-end" align="center" mt={10}>
-        <Text>
+      <Flex justify="flex-end" align="center" mt={10} mb={10}>
+        <Text fz="sm">
           <Text fw={700} span>
             Date:
           </Text>{" "}
-          January 20, 1998
+          {data?.payment.orderdate}
         </Text>
       </Flex>
 
-      <Table>
+      <Table fontSize="xs" captionSide="bottom">
+        <caption>
+          <Group position="center" spacing={20}>
+            <Text fz="sm">
+              <Text fw={700} span>
+                Total:
+              </Text>{" "}
+              {data?.payment.overalltotal}
+            </Text>
+            <Text fz="sm">
+              <Text fw={700} span>
+                Amount:
+              </Text>{" "}
+              {data?.payment.amount}
+            </Text>
+            <Text fz="sm">
+              <Text fw={700} span>
+                Change:
+              </Text>{" "}
+              {data?.payment.change}
+            </Text>
+          </Group>
+        </caption>
         <thead>
           <tr>
+            <th>#</th>
             <th>Name</th>
             <th>Price</th>
             <th>Quantity</th>
@@ -41,42 +67,17 @@ const ViewTransaction: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Neozep</td>
-            <td>12.00</td>
-            <td>4</td>
-            <td>48.00</td>
-          </tr>
-          <tr>
-            <td>Trust</td>
-            <td>30.00</td>
-            <td>2</td>
-            <td>60.00</td>
-          </tr>
+          {data?.transactions.map((transaction: any, index: number) => (
+            <tr key={transaction.id}>
+              <td>{index + 1}</td>
+              <td>{transaction.product}</td>
+              <td>{transaction.price}</td>
+              <td>{transaction.quantity}</td>
+              <td>{transaction.total}</td>
+            </tr>
+          ))}
         </tbody>
       </Table>
-      <Flex justify="flex-end" align="center">
-        <Stack align="flex-end" spacing={1}>
-          <Text fz="sm">
-            <Text fw={700} span>
-              Total:
-            </Text>{" "}
-            108.00
-          </Text>
-          <Text fz="sm">
-            <Text fw={700} span>
-              Amount:
-            </Text>{" "}
-            150.00
-          </Text>
-          <Text fz="sm">
-            <Text fw={700} span>
-              Change:
-            </Text>{" "}
-            42.00
-          </Text>
-        </Stack>
-      </Flex>
     </>
   );
 };
