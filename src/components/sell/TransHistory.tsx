@@ -55,7 +55,7 @@ const TransHistory: React.FC = () => {
         <SkeletonTable />
       ) : isSuccess ? (
         <>
-          <Table fontSize="xs">
+          <Table fontSize="xs" highlightOnHover>
             <thead>
               <tr>
                 <th>Purchase Date</th>

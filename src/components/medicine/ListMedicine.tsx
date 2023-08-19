@@ -146,7 +146,7 @@ const ListMedicine: React.FC = () => {
             </Center>
           ) : (
             <>
-              <Table fontSize="xs">
+              <Table fontSize="xs" highlightOnHover>
                 <thead>
                   <tr>
                     <th>Batch no</th>

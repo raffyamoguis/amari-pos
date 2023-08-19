@@ -200,7 +200,7 @@ const ListStocks: React.FC = () => {
             </Center>
           ) : (
             <>
-              <Table mt={10} fontSize="xs">
+              <Table mt={10} fontSize="xs" highlightOnHover>
                 <thead>
                   <tr>
                     <th>Name</th>

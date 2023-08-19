@@ -139,7 +139,7 @@ const ListNewSupplies: React.FC = () => {
               {othersupplies?.total}
             </Text>
           </Group>
-          <Table fontSize="xs">
+          <Table fontSize="xs" highlightOnHover>
             <thead>
               <tr>
                 <th>Name</th>
