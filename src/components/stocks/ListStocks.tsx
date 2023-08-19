@@ -8,6 +8,8 @@ import {
   Pagination,
   Text,
   Group,
+  Flex,
+  Select,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { modals } from "@mantine/modals";
@@ -35,19 +37,22 @@ interface Props {
 
 const ListStocks: React.FC = () => {
   const queryClient = useQueryClient();
-  const [activePage, offset, search, setActivePage] = useStockListStore(
-    (state) => [
-      state.activePage,
-      state.offset,
-      state.search,
-      state.setActivePage,
-    ],
-    shallow
-  );
+  const [activePage, offset, search, filter, setActivePage, setFilter] =
+    useStockListStore(
+      (state) => [
+        state.activePage,
+        state.offset,
+        state.search,
+        state.filter,
+        state.setActivePage,
+        state.setFilter,
+      ],
+      shallow
+    );
 
   const { data: stocks, isLoading } = useQuery<Props, Error>(
-    ["stocks", offset, search],
-    () => fetchStocks(offset, search),
+    ["stocks", offset, search, filter],
+    () => fetchStocks(offset, search, filter),
     { keepPreviousData: true }
   );
 
@@ -55,7 +60,11 @@ const ListStocks: React.FC = () => {
     if (search !== "") {
       setActivePage(1);
     }
-  }, [search]);
+
+    if (!!filter) {
+      setActivePage(1);
+    }
+  }, [search, filter]);
 
   async function handleQuantityChange(
     id: number,
@@ -160,20 +169,37 @@ const ListStocks: React.FC = () => {
         <SkeletonTable />
       ) : (
         <>
+          <Group align="center" position="apart" mt={20}>
+            <Flex align="center" gap="xs">
+              <Text fz="xs" fw={700}>
+                Filter by:
+              </Text>
+              <Select
+                maw={130}
+                value={filter}
+                onChange={setFilter}
+                data={[
+                  { label: "No filter", value: "" },
+                  { label: "In Stock", value: "in" },
+                  { label: "Low Stocks", value: "low" },
+                  { label: "No Stocks", value: "no" },
+                ]}
+                variant="unstyled"
+              />
+            </Flex>
+            <Text fz="xs">
+              <Text component="span" fw={700}>
+                Total:
+              </Text>{" "}
+              {stocks?.total}
+            </Text>
+          </Group>
           {stocks?.total === 0 ? (
             <Center mt={20}>
               <Text fz="sm">No results..</Text>
             </Center>
           ) : (
             <>
-              <Group position="right">
-                <Text fz="xs">
-                  <Text component="span" fw={700}>
-                    Total:
-                  </Text>{" "}
-                  {stocks?.total}
-                </Text>
-              </Group>
               <Table mt={10} fontSize="xs">
                 <thead>
                   <tr>

@@ -13,13 +13,13 @@ export async function createStock(stockfor: string) {
   }
 }
 
-export async function fetchStocks(offset: number, search : string) {
+export async function fetchStocks(offset: number, search : string, filter: string | null) {
     try {
         if (search !== "") {
-            const result = await axios.get(`${API_HOST}/stock/search?name=${encodeURIComponent(search)}&offset=${offset}`);
+            const result = await axios.get(`${API_HOST}/stock/search?name=${encodeURIComponent(search)}&offset=${offset}&filter=${filter}`);
             return result.data;
         }else {
-            const result = await axios.get(`${API_HOST}/stock?offset=${offset}`);
+            const result = await axios.get(`${API_HOST}/stock?offset=${offset}&filter=${filter}`);
             return result.data;
         }
     }catch (error) {
