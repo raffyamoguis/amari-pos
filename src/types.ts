@@ -1,5 +1,4 @@
 import React from "react";
-import { DateValue } from "@mantine/dates";
 
 export interface NavTypes {
     label: string;
