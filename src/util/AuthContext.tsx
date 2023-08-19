@@ -3,6 +3,7 @@ import uuid from "react-uuid";
 import { useLocalStorage } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import axios from "axios";
+import { API_HOST } from "../config";
 
 import Ripple from "../components/ripple/Ripple";
 
@@ -47,10 +48,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   }) => {
     setLoggingIn(true);
     try {
-      const result = await axios.post(
-        "http://localhost:3001/api/login",
-        credentials
-      );
+      const result = await axios.post(`${API_HOST}/api/login`, credentials);
       const user = result.data.user;
       if (user.length !== 0) {
         setUser(user);
