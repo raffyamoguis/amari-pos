@@ -4,10 +4,10 @@ import { API_HOST } from "../config";
 export async function fetchPayments(offset: number, dateFilter?: string) {
     try {
         if (!!dateFilter) { 
-            const result = await axios.get(`${API_HOST}/request/payment/${encodeURIComponent(dateFilter)}?offset=${offset}`)
+            const result = await axios.get(`${API_HOST}/api/request/payment/${encodeURIComponent(dateFilter)}?offset=${offset}`)
             return result.data
         }else {
-            const result = await axios.get(`${API_HOST}/payment?offset=${offset}`);
+            const result = await axios.get(`${API_HOST}/api/payment?offset=${offset}`);
             return result.data;
         }
     }catch (error) {
@@ -18,7 +18,7 @@ export async function fetchPayments(offset: number, dateFilter?: string) {
 
 export async function viewTransactionInfo(date: string | undefined) {
     try {
-        const result = await axios.get(`${API_HOST}/viewtransaction/${encodeURIComponent(!!date && date)}`);
+        const result = await axios.get(`${API_HOST}/api/viewtransaction/${encodeURIComponent(!!date && date)}`);
         return result.data;
     }catch (error) {
         console.log("An error occured on viewTransaction func: ", error);
@@ -28,7 +28,7 @@ export async function viewTransactionInfo(date: string | undefined) {
 
 export async function getTotalTransactionToday() {
     try {
-        const result = await axios.get(`${API_HOST}/payment/total`);
+        const result = await axios.get(`${API_HOST}/api/payment/total`);
         return result.data;
     }catch (error) {
         console.log("An error occured on getTotalTransactionToday func: ", error);

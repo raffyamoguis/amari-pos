@@ -3,7 +3,7 @@ import { API_HOST } from "../config";
 
 export async function getAddedToday() {
     try {
-        const result = await axios.get(`${API_HOST}/items/count/today`);
+        const result = await axios.get(`${API_HOST}/api/items/count/today`);
         return result.data;
     }catch (error) {
         console.log("getAddedToday: ", error);
@@ -13,7 +13,7 @@ export async function getAddedToday() {
 
 export async function getSalesToday() {
     try {
-        const result = await axios.get(`${API_HOST}/transactions/total/today`);
+        const result = await axios.get(`${API_HOST}/api/transactions/total/today`);
         return result.data;
     }catch (error) {
         console.log("getSalesToday: ", error);
@@ -23,7 +23,7 @@ export async function getSalesToday() {
 
 export async function getAllTotal() {
     try {
-        const result = await axios.get(`${API_HOST}/total/all`);
+        const result = await axios.get(`${API_HOST}/api/total/all`);
         return result.data;
     }catch (error) {
         console.log("getSalesToday: ", error);
@@ -33,7 +33,7 @@ export async function getAllTotal() {
 
 export async function fetchFilteredStocks() {
     try {
-        const result = await axios.get(`${API_HOST}/stocks/filtered`);
+        const result = await axios.get(`${API_HOST}/api/stocks/filtered`);
         return result.data;
     }catch (error) {
         console.log("fetchFilteredStocks: ", error);

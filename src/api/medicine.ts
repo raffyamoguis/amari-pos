@@ -3,7 +3,7 @@ import { API_HOST } from "../config";
 
 export async function addMedicine(medicine : any) {
   try {
-    await axios.post(`${API_HOST}/medicine`, medicine);
+    await axios.post(`${API_HOST}/api/medicine`, medicine);
     return true; // Return true if the query is successful
   } catch (error) {
     console.log("An error occurred in addMedicine function:", error);
@@ -13,7 +13,7 @@ export async function addMedicine(medicine : any) {
 
 export async function getMedicine(id : string | undefined) {
   try {
-    const result = await axios.get(`${API_HOST}/medicine/${parseInt(typeof id === "string" ? id : "")}`);
+    const result = await axios.get(`${API_HOST}/api/medicine/${parseInt(typeof id === "string" ? id : "")}`);
     return result?.data;
   } catch (error) {
     console.log("An error occurred in addMedicine function:", error);
@@ -23,7 +23,7 @@ export async function getMedicine(id : string | undefined) {
 
 export async function updateMedicine(id: string | undefined, medicine : any) {
   try {
-    await axios.put(`${API_HOST}/medicine/${id}`, {
+    await axios.put(`${API_HOST}/api/medicine/${id}`, {
       batchno: medicine.batchno,
       name: medicine.name,
       specification: medicine.specification,
@@ -40,10 +40,10 @@ export async function updateMedicine(id: string | undefined, medicine : any) {
 export async function fetchMedicines(offset: number, search: string){
     try {
       if (search !== "") {
-        const result = await axios.get(`${API_HOST}/medicine/search/find?name=${encodeURIComponent(search)}&offset=${encodeURIComponent(offset)}`);
+        const result = await axios.get(`${API_HOST}/api/medicine/search/find?name=${encodeURIComponent(search)}&offset=${encodeURIComponent(offset)}`);
         return result.data;
       }else {
-        const result = await axios.get(`${API_HOST}/medicine?offset=${offset}`);
+        const result = await axios.get(`${API_HOST}/api/medicine?offset=${offset}`);
         return result.data;
       }
         
@@ -56,7 +56,7 @@ export async function fetchMedicines(offset: number, search: string){
 export async function searchMedicine(query: string) {
     if (!!query) {
         try {
-            const result = await axios.get(`${API_HOST}/products?name=${encodeURIComponent(query)}`);
+            const result = await axios.get(`${API_HOST}/api/products?name=${encodeURIComponent(query)}`);
             return result.data;
         }catch (error) {
             console.log("An error occured on searchMedicine func: ",error);
@@ -68,7 +68,7 @@ export async function searchMedicine(query: string) {
 export async function fetchItemInfo(item: string) {
     if (!!item) {
         try {
-            const result = await axios.get(`${API_HOST}/products/${encodeURIComponent(item)}`);
+            const result = await axios.get(`${API_HOST}/api/products/${encodeURIComponent(item)}`);
             return result.data;
         }catch (error) {
             console.log("An error occured on fetchItemInfo func: ",error);
@@ -79,7 +79,7 @@ export async function fetchItemInfo(item: string) {
 
 export async function checkMedicine(name: string) {
     try {
-        const result = await axios.get(`${API_HOST}/searchRedundant/${encodeURIComponent(name)}`);
+        const result = await axios.get(`${API_HOST}/api/searchRedundant/${encodeURIComponent(name)}`);
         return result.data;
     }catch (error) {
         console.log("An error occured on checkMedicine func: ",error);
@@ -89,7 +89,7 @@ export async function checkMedicine(name: string) {
 
 export async function deleteMedicine(id: number | undefined) {
     try {
-        const result = await axios.delete(`${API_HOST}/medicine/${id}`);
+        const result = await axios.delete(`${API_HOST}/api/medicine/${id}`);
         return result.data;
     }catch (error) {
         console.log("An error occurred in deleteMedicine function:", error);
@@ -99,7 +99,7 @@ export async function deleteMedicine(id: number | undefined) {
 
 export async function deleteMedicineByName(name: string) {
   try {
-    const result = await axios.delete(`${API_HOST}/medicine/delete/${encodeURIComponent(name)}`);
+    const result = await axios.delete(`${API_HOST}/api/medicine/delete/${encodeURIComponent(name)}`);
     return result.data;
   }catch (error) {
     console.log("An error occurred in deleteMedicineByName function:", error);

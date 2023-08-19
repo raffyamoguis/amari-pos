@@ -5,7 +5,7 @@ import { notifications } from "@mantine/notifications";
 
 export async function createStock(stockfor: string) {
     try {
-    await axios.post(`${API_HOST}/stock`, { stockfor: stockfor, quantity: 0});
+    await axios.post(`${API_HOST}/api/stock`, { stockfor: stockfor, quantity: 0});
     return true; // Return true if the query is successful
   } catch (error) {
     console.log("An error occurred in addMedicine function:", error);
@@ -16,10 +16,10 @@ export async function createStock(stockfor: string) {
 export async function fetchStocks(offset: number, search : string, filter: string | null) {
     try {
         if (search !== "") {
-            const result = await axios.get(`${API_HOST}/stock/search?name=${encodeURIComponent(search)}&offset=${offset}&filter=${filter}`);
+            const result = await axios.get(`${API_HOST}/api/stock/search?name=${encodeURIComponent(search)}&offset=${offset}&filter=${filter}`);
             return result.data;
         }else {
-            const result = await axios.get(`${API_HOST}/stock?offset=${offset}&filter=${filter}`);
+            const result = await axios.get(`${API_HOST}/api/stock?offset=${offset}&filter=${filter}`);
             return result.data;
         }
     }catch (error) {
@@ -30,7 +30,7 @@ export async function fetchStocks(offset: number, search : string, filter: strin
 
 export async function updateStock(name: string, newName: string) {
     try {
-        const result = await axios.put(`${API_HOST}/edit/stock/${name}`, { newname: newName });
+        const result = await axios.put(`${API_HOST}/api/edit/stock/${name}`, { newname: newName });
         return result.data;
     }catch (error) {
         console.log("An error occured on updateStock func: ", error);
@@ -40,7 +40,7 @@ export async function updateStock(name: string, newName: string) {
 
 export async function updateStockQuantity(id: number | string, quantity: number | "") {
     try {
-        await axios.put(`${API_HOST}/stock/${encodeURIComponent(id)}`, {
+        await axios.put(`${API_HOST}/api/stock/${encodeURIComponent(id)}`, {
             quantity: quantity
         })
         return true;
@@ -57,7 +57,7 @@ export async function updateStocks(transactions: TransactionTypes[]): Promise<bo
             const updatedStock = transaction.stock - transaction.quantity;
 
             try {
-                await axios.put(`${API_HOST}/reducestock/${encodeURIComponent(transaction.product)}`, {
+                await axios.put(`${API_HOST}/api/reducestock/${encodeURIComponent(transaction.product)}`, {
                     q: updatedStock
                 });
                 return true; // Return true if update is successful for this transaction
@@ -82,7 +82,7 @@ export async function updateStocks(transactions: TransactionTypes[]): Promise<bo
 
 export async function deleteStock(name:string) {
     try {
-        const result = await axios.delete(`${API_HOST}/stockn/${name}`);
+        const result = await axios.delete(`${API_HOST}/api/stockn/${name}`);
         return result.data;
     }catch(error) {
         console.log("An error occured while deleting stock: ", error);
@@ -94,7 +94,7 @@ export async function createPayment(paymentInfo: any): Promise<boolean> {
     
 
     try {
-        await axios.post(`${API_HOST}/payment`, {
+        await axios.post(`${API_HOST}/api/payment`, {
             overalltotal: paymentInfo.overalltotal,
             amount: paymentInfo.amount,
             change: paymentInfo.change,
@@ -112,7 +112,7 @@ export async function createPayment(paymentInfo: any): Promise<boolean> {
 export async function createTransactions(transactions: TransactionTypes[], currdate: string) {
     try {
         const promises = transactions.map(async (transaction) => {
-            await axios.post('http://localhost:3001/api/transaction', {
+            await axios.post(`${API_HOST}/api/transaction`, {
                 paymentid: currdate,
                 product: transaction.product,
                 stock: transaction.stock,
@@ -137,7 +137,7 @@ export async function createTransactions(transactions: TransactionTypes[], currd
 
 export async function checkType(name: string) {
     try {
-        const result = await axios.get(`${API_HOST}/check/type/${encodeURIComponent(name)}`);
+        const result = await axios.get(`${API_HOST}/api/check/type/${encodeURIComponent(name)}`);
         return result.data;
     }catch (error) {
         console.error('An error occurred while checking type: ', error);
