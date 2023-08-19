@@ -40,3 +40,13 @@ export async function fetchFilteredStocks() {
         throw error;
     }
 }
+
+export async function updateAccount(values: any) {
+    try{
+        const { data } = await axios.put(`${API_HOST}/login`, values);
+        return data;
+    }catch (error) {
+        console.log("updateAccount: ", error);
+        throw error;
+    }
+}
