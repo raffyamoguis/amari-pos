@@ -36,10 +36,17 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     defaultValue: "",
   });
 
-  const getUserOnLoad = () => {
-    setTimeout(() => {
+  const getUserOnLoad = async () => {
+    try {
+      await axios.get(`${API_HOST}/api/check`);
       setLoading(false);
-    }, 1000);
+    } catch (error) {
+      notifications.show({
+        message: "Server is not ready.",
+        color: "red",
+      });
+      setLoading(false);
+    }
   };
 
   const handleUserLogin = async (credentials?: {
@@ -94,6 +101,14 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     getUserOnLoad();
+
+    // Set up a repeating interval to check API status every 5 seconds
+    const intervalId = setInterval(getUserOnLoad, 5000); // Adjust the interval as needed
+
+    // Clean up the interval when the component unmounts
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (
