@@ -17,7 +17,7 @@ Brief introduction about your project. What problem does it solve? Why is it imp
 
 ## Demo
 
-[live demo](https://amari-pos.vercel.app/)
+[live preview](amari-6koeb1viv-raffyamoguis.vercel.app)
 
 ## Features
 
