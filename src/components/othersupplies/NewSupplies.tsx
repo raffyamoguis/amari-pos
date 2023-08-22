@@ -81,7 +81,7 @@ const NewSupplies: React.FC = () => {
     <>
       <Text mb={4}>Add new other supplies</Text>
       <form onSubmit={form.onSubmit((values) => handleAddOtherSupply(values))}>
-        <Group align="end">
+        <Group align="start">
           <TextInput
             placeholder="Enter name"
             maw={180}
