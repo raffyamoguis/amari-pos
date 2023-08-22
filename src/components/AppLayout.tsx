@@ -12,6 +12,8 @@ import {
   Box,
   Card,
   Group,
+  Flex,
+  Image,
 } from "@mantine/core";
 import { IconUserCircle } from "@tabler/icons-react";
 
@@ -89,7 +91,14 @@ const AppLayout: React.FC = () => {
               />
             </MediaQuery>
 
-            <Title order={4}>Amari Angels</Title>
+            <Flex justify="flex-start" align="center" gap="xs">
+              <Image
+                alt="Amari logo"
+                src="/android-chrome-192x192.png"
+                width={45}
+              />
+              <Title order={4}>Amari Angels</Title>
+            </Flex>
             <AvatarMenu />
           </Group>
         </Header>
