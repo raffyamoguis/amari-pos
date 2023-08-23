@@ -5,7 +5,7 @@ import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import { API_HOST } from "../config";
 
-import Ripple from "../components/ripple/Ripple";
+import CheckContext from "./CheckContext";
 
 interface AuthContextData {
   user: any;
@@ -30,21 +30,20 @@ interface Props {
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isLoggingIn, setLoggingIn] = useState<boolean>(false);
+  const [isServerReady, setServerReady] = useState<boolean>(false);
   const [user, setUser] = useState<any>(null);
   const [session, setSession, removeSession] = useLocalStorage({
     key: "session-key",
     defaultValue: "",
   });
 
-  const getUserOnLoad = async () => {
+  const checkServer = async () => {
     try {
       await axios.get(`${API_HOST}/api/check`);
       setLoading(false);
+      setServerReady(true);
     } catch (error) {
-      notifications.show({
-        message: "Server is not ready.",
-        color: "red",
-      });
+      setServerReady(false);
       setLoading(false);
     }
   };
@@ -100,10 +99,10 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   };
 
   useEffect(() => {
-    getUserOnLoad();
+    checkServer();
 
     // Set up a repeating interval to check API status every 5 seconds
-    const intervalId = setInterval(getUserOnLoad, 5000); // Adjust the interval as needed
+    const intervalId = setInterval(checkServer, 5000); // Adjust the interval as needed
 
     // Clean up the interval when the component unmounts
     return () => {
@@ -113,7 +112,12 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <AuthContext.Provider value={contextData}>
-      {loading ? <Ripple /> : children}
+      <CheckContext
+        isLoading={loading}
+        isServerReady={isServerReady}
+        children={children}
+      />
+      {/* {loading ? <Ripple /> : children} */}
     </AuthContext.Provider>
   );
 };
