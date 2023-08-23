@@ -43,7 +43,7 @@ export async function fetchFilteredStocks() {
 
 export async function updateAccount(values: any) {
     try{
-        const { data } = await axios.put(`${API_HOST}/login`, values);
+        const { data } = await axios.put(`${API_HOST}/api/login`, values);
         return data;
     }catch (error) {
         console.log("updateAccount: ", error);

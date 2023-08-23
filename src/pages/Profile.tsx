@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Center,
   Card,
@@ -17,6 +17,7 @@ import { useAuth } from "../util/AuthContext";
 
 const Profile: React.FC = () => {
   const { handleUserLogout } = useAuth();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const form = useForm({
     initialValues: {
@@ -59,23 +60,28 @@ const Profile: React.FC = () => {
   });
 
   async function handleUpdate(values: any) {
+    setLoading(true);
     const result = await updateAccount({
       username: values.username,
       password: values.newpassword,
     });
 
     if (!!result.account[0]) {
-      form.reset();
-      notifications.show({
-        message: "Successfully updated account.",
-        color: "green",
-      });
-      handleUserLogout();
+      setTimeout(() => {
+        form.reset();
+        notifications.show({
+          message: "Successfully updated account.",
+          color: "green",
+        });
+        setLoading(false);
+        handleUserLogout();
+      }, 2000);
     } else {
       notifications.show({
         message: "Error updating account.",
         color: "red",
       });
+      setLoading(false);
     }
   }
   return (
@@ -106,7 +112,7 @@ const Profile: React.FC = () => {
               placeholder="Confirm new password"
               {...form.getInputProps("confirmpassword")}
             />
-            <Button type="submit" mt={20} fullWidth>
+            <Button type="submit" mt={20} loading={loading} fullWidth>
               Update Profile
             </Button>
           </form>
