@@ -7,6 +7,8 @@ import {
   PasswordInput,
   Button,
   Stack,
+  Image,
+  Center,
 } from "@mantine/core";
 import { useAuth } from "../../util/AuthContext";
 import { useForm } from "@mantine/form";
@@ -30,6 +32,9 @@ const Login: React.FC = () => {
     <>
       <Flex justify="center" align="center" style={{ height: "100vh" }}>
         <Stack>
+          <Center>
+            <Image src="/android-chrome-192x192.png" width={90} />
+          </Center>
           <Text ta="center" fz="lg" fw={700}>
             Amari Angels Pharmacy
           </Text>
