@@ -5,19 +5,22 @@ type State = {
     offset: number;
     search: string;
     filter: string | null;
+    success: boolean;
 }
 
 type Actions = {
     setActivePage: (number: number) => void;
     setSearch: (search: string) => void;
     setFilter: (filter: string|null) => void;
+    setSuccess: (val: boolean) => void;
 }
 
 const initialState: State = {
     activePage: 1,
     offset: 0,
     search: "",
-    filter: ""
+    filter: "",
+    success: false
 }
 
 export const useStockListStore = create<State & Actions>((set) => ({
@@ -28,4 +31,5 @@ export const useStockListStore = create<State & Actions>((set) => ({
     },
     setSearch: (search: string) => set({search: search}),
     setFilter: (filter: string | null) => set({filter: filter}),
+    setSuccess: (val: boolean) => set({success: val})
 }));
