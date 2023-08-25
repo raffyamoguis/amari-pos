@@ -37,18 +37,28 @@ interface Props {
 
 const ListStocks: React.FC = () => {
   const queryClient = useQueryClient();
-  const [activePage, offset, search, filter, setActivePage, setFilter] =
-    useStockListStore(
-      (state) => [
-        state.activePage,
-        state.offset,
-        state.search,
-        state.filter,
-        state.setActivePage,
-        state.setFilter,
-      ],
-      shallow
-    );
+  const [
+    activePage,
+    offset,
+    search,
+    filter,
+    success,
+    setActivePage,
+    setFilter,
+    setSuccess,
+  ] = useStockListStore(
+    (state) => [
+      state.activePage,
+      state.offset,
+      state.search,
+      state.filter,
+      state.success,
+      state.setActivePage,
+      state.setFilter,
+      state.setSuccess,
+    ],
+    shallow
+  );
 
   const { data: stocks, isLoading } = useQuery<Props, Error>(
     ["stocks", offset, search, filter],
@@ -69,18 +79,24 @@ const ListStocks: React.FC = () => {
   async function handleQuantityChange(
     id: number,
     value: number | "",
-    name: string
   ) {
     const isUpdateStockQuantitySuccess = await updateStockQuantity(
       id,
       value !== "" ? value : 0
     );
-    if (isUpdateStockQuantitySuccess) {
+
+    if (isUpdateStockQuantitySuccess)
+      await queryClient.invalidateQueries("stocks");
+
+    setSuccess(isUpdateStockQuantitySuccess);
+  }
+
+   function handleInputBlur(name: string) {
+    if (success) {
       notifications.show({
         message: `${name} updated quantity.`,
         color: "green",
       });
-      await queryClient.invalidateQueries("stocks");
     } else {
       notifications.show({
         message: `There is an error updating quantity of ${name}.`,
@@ -221,11 +237,11 @@ const ListStocks: React.FC = () => {
                           value={!!stock.quantity ? stock.quantity : 0}
                           maw={100}
                           min={0}
+                          onBlur={() => handleInputBlur(stock.stockfor)}
                           onChange={(value) =>
                             handleQuantityChange(
                               stock.id,
                               value,
-                              stock.stockfor
                             )
                           }
                         />
