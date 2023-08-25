@@ -55,7 +55,7 @@ const NewSupplies: React.FC = () => {
 
     if (resCheckOtherSupply.isRedundant) {
       notifications.show({
-        message: `${othersupply.name} is already present update the stock instead.`,
+        message: `${othersupply.name} is already present on ${resCheckOtherSupply.type} update the stock instead.`,
         color: "yellow",
       });
       setLoading(false);
@@ -67,7 +67,7 @@ const NewSupplies: React.FC = () => {
 
         if (isAddStockSuccess) {
           notifications.show({
-            message: "Medicine successfully added.",
+            message: "Other supply successfully added.",
             color: "green",
           });
           setLoading(false);
