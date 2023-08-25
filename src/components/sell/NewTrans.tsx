@@ -95,18 +95,22 @@ const NewTrans: React.FC = () => {
     if (amount !== "" && totalAmount !== 0) {
       setAmount(amount);
       const checkChange = amount - totalAmount;
-      console.log("Checkchange: ", checkChange);
       if (checkChange >= 0) {
         setChange(checkChange);
         setSafe(false);
       } else {
         setSafe(true);
         setChange(0);
-        notifications.show({
-          message: "Amount should be greater than total.",
-          color: "red",
-        });
       }
+    }
+  }
+
+  function handleAmountBlur() {
+    if (safeToProceed) {
+      notifications.show({
+        message: "Amount should be greater than total.",
+        color: "red",
+      });
     }
   }
 
@@ -319,6 +323,7 @@ const NewTrans: React.FC = () => {
               label="Amount"
               value={amount}
               onChange={(value) => handleAmountChange(value)}
+              onBlur={handleAmountBlur}
               precision={2}
               maw={100}
               min={0}
