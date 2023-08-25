@@ -69,9 +69,9 @@ const TransHistory: React.FC = () => {
               {payments?.items.map((transaction: PaymentTypes) => (
                 <tr key={transaction.id}>
                   <td>{transaction.orderdate}</td>
-                  <td>{transaction.overalltotal}</td>
-                  <td>{transaction.amount}</td>
-                  <td>{transaction.change}</td>
+                  <td>{parseFloat(transaction.overalltotal).toFixed(2)}</td>
+                  <td>{parseFloat(transaction.amount).toFixed(2)}</td>
+                  <td>{parseFloat(transaction.change).toFixed(2)}</td>
                   <td>
                     <IconAction
                       color="blue"

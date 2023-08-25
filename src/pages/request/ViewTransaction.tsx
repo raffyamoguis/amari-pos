@@ -60,19 +60,19 @@ const ViewTransaction: React.FC = () => {
                 <Text fw={700} span>
                   Total:
                 </Text>{" "}
-                {data?.payment.overalltotal}
+                {parseFloat(data?.payment.overalltotal).toFixed(2)}
               </Text>
               <Text fz="xs">
                 <Text fw={700} span>
                   Amount:
                 </Text>{" "}
-                {data?.payment.amount}
+                {parseFloat(data?.payment.amount).toFixed(2)}
               </Text>
               <Text fz="xs">
                 <Text fw={700} span>
                   Change:
                 </Text>{" "}
-                {data?.payment.change}
+                {parseFloat(data?.payment.change).toFixed(2)}
               </Text>
             </Group>
           </caption>
@@ -90,9 +90,9 @@ const ViewTransaction: React.FC = () => {
               <tr key={transaction.id}>
                 <td>{index + 1}</td>
                 <td>{transaction.product}</td>
-                <td>{transaction.price}</td>
+                <td>{parseFloat(transaction.price).toFixed(2)}</td>
                 <td>{transaction.quantity}</td>
-                <td>{transaction.total}</td>
+                <td>{parseFloat(transaction.total).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>

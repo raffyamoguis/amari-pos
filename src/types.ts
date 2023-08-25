@@ -46,9 +46,9 @@ export interface TransactionTypes {
 
 export interface PaymentTypes {
     id: number;
-    amount: number;
-    change: number;
-    overalltotal: number;
+    amount: string;
+    change: string;
+    overalltotal: string;
     orderdate: string;
 }
 

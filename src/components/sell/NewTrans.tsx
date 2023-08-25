@@ -95,6 +95,7 @@ const NewTrans: React.FC = () => {
     if (amount !== "" && totalAmount !== 0) {
       setAmount(amount);
       const checkChange = amount - totalAmount;
+      console.log("Checkchange: ", checkChange);
       if (checkChange >= 0) {
         setChange(checkChange);
         setSafe(false);
@@ -267,7 +268,7 @@ const NewTrans: React.FC = () => {
                       min={1}
                     />
                   </td>
-                  <td>{transaction.total}</td>
+                  <td>{transaction.total.toFixed(2)}</td>
                   <td>
                     <ActionIcon
                       color="red"
@@ -295,49 +296,56 @@ const NewTrans: React.FC = () => {
         </>
       )}
 
-      <Group mt={20} position="right" align="end">
-        <NumberInput
-          label="Total"
-          value={totalAmount}
-          maw={70}
-          hideControls
-          disabled
-        />
-        <NumberInput
-          label="Change"
-          value={change}
-          maw={70}
-          hideControls
-          disabled
-        />
-        <NumberInput
-          label="Amount"
-          value={amount}
-          onChange={(value) => handleAmountChange(value)}
-          maw={80}
-          min={0}
-        />
-        <Button
-          onClick={handleProceed}
-          disabled={safeToProceed}
-          loading={loading}
-        >
-          Proceed
-        </Button>
-      </Group>
-      <Group mt={15} position="right" align="center" spacing="xs">
-        {amountShorthand.map((amount, key) => (
-          <Button
-            key={key}
-            variant="light"
-            color="gray"
-            size="xs"
-            onClick={() => handleAmountChange(amount)}
-          >
-            {amount}
-          </Button>
-        ))}
-      </Group>
+      {!!trans.length && (
+        <>
+          <Group mt={20} position="right" align="end">
+            <NumberInput
+              label="Total"
+              value={totalAmount}
+              precision={2}
+              maw={100}
+              hideControls
+              disabled
+            />
+            <NumberInput
+              label="Change"
+              value={change}
+              precision={2}
+              maw={100}
+              hideControls
+              disabled
+            />
+            <NumberInput
+              label="Amount"
+              value={amount}
+              onChange={(value) => handleAmountChange(value)}
+              precision={2}
+              maw={100}
+              min={0}
+            />
+            <Button
+              onClick={handleProceed}
+              disabled={safeToProceed}
+              loading={loading}
+            >
+              Proceed
+            </Button>
+          </Group>
+          <Group mt={15} position="right" align="center" spacing="xs">
+            {amountShorthand.map((amount, key) => (
+              <Button
+                key={key}
+                variant="light"
+                color="gray"
+                size="xs"
+                onClick={() => handleAmountChange(amount)}
+              >
+                {amount}
+              </Button>
+            ))}
+          </Group>
+        </>
+      )}
     </>
   );
 };
