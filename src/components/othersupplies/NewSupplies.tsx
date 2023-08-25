@@ -6,7 +6,8 @@ import { notifications } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
 import { format } from "date-fns";
 
-import { checkOtherSupply, addOtherSupply } from "../../api/othersuppliest";
+import { addOtherSupply } from "../../api/othersuppliest";
+import { checkMedicine } from "../../api/medicine";
 import { createStock } from "../../api/stocks";
 
 const NewSupplies: React.FC = () => {
@@ -42,7 +43,7 @@ const NewSupplies: React.FC = () => {
       newExpiry = format(expiry, "yyyy-MMMM-dd");
     }
 
-    const formattedName = othersupply.name.trim();
+    const formattedName = othersupply.name.replace(/\s+/g, " ").trim();
     const newOtherSupply = {
       name: formattedName,
       description: othersupply.description,
@@ -50,7 +51,7 @@ const NewSupplies: React.FC = () => {
       price: othersupply.price,
     };
 
-    const resCheckOtherSupply = await checkOtherSupply(formattedName);
+    const resCheckOtherSupply = await checkMedicine(formattedName);
 
     if (resCheckOtherSupply.isRedundant) {
       notifications.show({

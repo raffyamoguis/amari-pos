@@ -43,19 +43,22 @@ const NewMedicine: React.FC = () => {
       newExpiry = format(expiry, "yyyy-MMMM-dd");
     }
 
+    const formattedName = medicine.name.replace(/\s+/g, " ").trim();
     const newMedicine = {
       batchno: medicine.batchno,
-      name: medicine.name.trim(),
+      name: formattedName,
       specification: medicine.specification,
       expiry: newExpiry,
       price: medicine.price,
     };
 
-    const resCheckMedicine = await checkMedicine(medicine.name);
+    console.log(newMedicine);
+
+    const resCheckMedicine = await checkMedicine(formattedName);
 
     if (resCheckMedicine.isRedundant) {
       notifications.show({
-        message: `${medicine.name} is already present update the stock instead.`,
+        message: `${medicine.name} is already present on ${resCheckMedicine.type} update the stock instead.`,
         color: "yellow",
       });
       setLoading(false);
@@ -63,7 +66,7 @@ const NewMedicine: React.FC = () => {
       const isAddMedicineSuccess = await addMedicine(newMedicine);
 
       if (isAddMedicineSuccess) {
-        const isAddStockSuccess = await createStock(medicine.name.trim());
+        const isAddStockSuccess = await createStock(formattedName);
 
         if (isAddStockSuccess) {
           notifications.show({
