@@ -59,9 +59,15 @@ const HomeCards: React.FC = () => {
           <Text fw="bold">Sales</Text>
           <IconReportMoney />
         </Group>
-        <Text ta="center" fz={50} fw="bold">
-          ₱{salesToday?.sales}
-        </Text>
+        {!!salesToday?.sales ? (
+          <Text ta="center" fz={50} fw="bold">
+            ₱{salesToday.sales}
+          </Text>
+        ) : (
+          <Text ta="center" fz={50} fw="bold">
+            0
+          </Text>
+        )}
       </Card>
       <Card
         sx={(theme) => ({
