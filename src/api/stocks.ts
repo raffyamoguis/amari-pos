@@ -82,7 +82,7 @@ export async function updateStocks(transactions: TransactionTypes[]): Promise<bo
 
 export async function deleteStock(name:string) {
     try {
-        const result = await axios.delete(`${API_HOST}/api/stockn/${name}`);
+        const result = await axios.delete(`${API_HOST}/api/stockn/${encodeURIComponent(name)}`);
         return result.data;
     }catch(error) {
         console.log("An error occured while deleting stock: ", error);
