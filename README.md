@@ -16,8 +16,9 @@ A web based POS System.
 Brief introduction about your project. What problem does it solve? Why is it important? Mention any relevant technologies or frameworks you've used.
 
 ## Demo
-
-[live preview](https://amari-6koeb1viv-raffyamoguis.vercel.app)
+- username: admin
+- password: admin
+- [live preview](https://amari-6koeb1viv-raffyamoguis.vercel.app)
 
 ## Features
 
