@@ -139,45 +139,51 @@ const ListNewSupplies: React.FC = () => {
               {othersupplies?.total}
             </Text>
           </Group>
-          <Table fontSize="xs" highlightOnHover>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Expiry</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {othersupplies?.items.map((othersupply: OtherSupplyTypes) => (
-                <tr key={othersupply.id}>
-                  <td>{othersupply.name}</td>
-                  <td>{othersupply.description}</td>
-                  <td>{othersupply.price}</td>
-                  <td>{othersupply.expiry}</td>
-                  <td>
-                    <Flex>
-                      <IconAction
-                        color="green"
-                        icon={<IconEdit size="1.125rem" />}
-                        onClick={() =>
-                          navigate(`/othersupplies/${othersupply.id}`)
-                        }
-                      />
-                      <IconAction
-                        color="red"
-                        icon={<IconTrash size="1.125rem" />}
-                        onClick={() =>
-                          openDeleteModal(othersupply.id, othersupply.name)
-                        }
-                      />
-                    </Flex>
-                  </td>
+          {othersupplies?.total === 0 ? (
+            <Center mt={20}>
+              <Text fz="sm">No results..</Text>
+            </Center>
+          ) : (
+            <Table fontSize="xs" highlightOnHover>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Expiry</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {othersupplies?.items.map((othersupply: OtherSupplyTypes) => (
+                  <tr key={othersupply.id}>
+                    <td>{othersupply.name}</td>
+                    <td>{othersupply.description}</td>
+                    <td>{othersupply.price}</td>
+                    <td>{othersupply.expiry}</td>
+                    <td>
+                      <Flex>
+                        <IconAction
+                          color="green"
+                          icon={<IconEdit size="1.125rem" />}
+                          onClick={() =>
+                            navigate(`/othersupplies/${othersupply.id}`)
+                          }
+                        />
+                        <IconAction
+                          color="red"
+                          icon={<IconTrash size="1.125rem" />}
+                          onClick={() =>
+                            openDeleteModal(othersupply.id, othersupply.name)
+                          }
+                        />
+                      </Flex>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
           <Center mt={12}>
             <Pagination
               size="sm"
