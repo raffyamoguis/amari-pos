@@ -18,7 +18,7 @@ Brief introduction about your project. What problem does it solve? Why is it imp
 ## Demo
 - username: admin
 - password: admin
-- [live preview](https://amari-6koeb1viv-raffyamoguis.vercel.app)
+- [live preview](https://amari-pos-git-with-node-raffyamoguis.vercel.app/)
 
 ## Features
 
