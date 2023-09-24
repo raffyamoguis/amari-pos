@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { MEASUREMENT_ID } from "./config.ts";
 import ReactGA from "react-ga4";
+import './fonts/Inter-Regular.woff';
 
 ReactGA.initialize(MEASUREMENT_ID);
 
