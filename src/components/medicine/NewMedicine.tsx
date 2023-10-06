@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQueryClient } from "react-query";
+import { toast } from "sonner";
 import { Text, Group, TextInput, NumberInput, Button } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { format } from "date-fns";
@@ -52,15 +52,12 @@ const NewMedicine: React.FC = () => {
       price: medicine.price,
     };
 
-    console.log(newMedicine);
-
     const resCheckMedicine = await checkMedicine(formattedName);
 
     if (resCheckMedicine.isRedundant) {
-      notifications.show({
-        message: `${medicine.name} is already present on ${resCheckMedicine.type} update the stock instead.`,
-        color: "yellow",
-      });
+      toast.error(
+        `${medicine.name} is already present on ${resCheckMedicine.type} update the stock instead.`
+      );
       setLoading(false);
     } else {
       const isAddMedicineSuccess = await addMedicine(newMedicine);
@@ -69,10 +66,7 @@ const NewMedicine: React.FC = () => {
         const isAddStockSuccess = await createStock(formattedName);
 
         if (isAddStockSuccess) {
-          notifications.show({
-            message: "Medicine successfully added.",
-            color: "green",
-          });
+          toast.success("Medicine successfully added.");
           setLoading(false);
           await queryClient.invalidateQueries("medicines");
           await queryClient.invalidateQueries("stocks");

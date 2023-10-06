@@ -12,7 +12,7 @@ import {
   Pagination,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { notifications } from "@mantine/notifications";
+import { toast } from "sonner";
 import { IconSearch, IconEdit, IconTrash, IconX } from "@tabler/icons-react";
 
 import { fetchMedicines, deleteMedicine } from "../../api/medicine";
@@ -76,34 +76,22 @@ const ListMedicine: React.FC = () => {
         const delMedicine = await deleteMedicine(id);
 
         if (!!delMedicine.result) {
-          notifications.show({
-            message: `Successfully deleted ${name}.`,
-            color: "green",
-          });
+          toast.success(`Successfully deleted ${name}.`);
           await queryClient.invalidateQueries("medicines");
         } else {
-          notifications.show({
-            message: `There is an error deleting ${name} data.`,
-            color: "red",
-          });
+          toast.error(`There is an error deleting ${name} data.`);
         }
 
         //Remove the stock
         const delStock = await deleteStock(name);
 
         if (!!delStock.result) {
-          notifications.show({
-            message: `Successfully deleted ${name} stocks.`,
-            color: "green",
-          });
+          toast.success(`Successfully deleted ${name} stocks.`);
 
           // Invalidate queries
           await queryClient.invalidateQueries("stocks");
         } else {
-          notifications.show({
-            message: `There is an error deleting ${name} stocks.`,
-            color: "red",
-          });
+          toast.error(`There is an error deleting ${name} stocks.`);
         }
       },
     });

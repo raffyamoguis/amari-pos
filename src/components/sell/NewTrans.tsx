@@ -14,7 +14,7 @@ import {
   ScrollArea,
   Tooltip,
 } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
+import { toast } from "sonner";
 import { IconSearch, IconTrash, IconTrashX, IconX } from "@tabler/icons-react";
 import { TransactionTypes } from "../../types";
 import { amountShorthand } from "../../lib/transactions/data";
@@ -107,10 +107,7 @@ const NewTrans: React.FC = () => {
 
   function handleAmountBlur() {
     if (safeToProceed) {
-      notifications.show({
-        message: "Amount should be greater than total.",
-        color: "red",
-      });
+      toast.error("Amount should be greater than total.");
     }
   }
 
@@ -166,10 +163,7 @@ const NewTrans: React.FC = () => {
 
         if (isCreateTransactionSuccessful) {
           setLoading(false);
-          notifications.show({
-            message: "Transaction created successfully.",
-            color: "green",
-          });
+          toast.success("Transaction created successfully.");
           reset();
         }
       }

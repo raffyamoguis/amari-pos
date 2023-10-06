@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useQueryClient } from "react-query";
 import { Text, Group, TextInput, NumberInput, Button } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { notifications } from "@mantine/notifications";
+import { toast } from "sonner";
 import { useForm } from "@mantine/form";
 import { format } from "date-fns";
 
@@ -54,10 +54,9 @@ const NewSupplies: React.FC = () => {
     const resCheckOtherSupply = await checkMedicine(formattedName);
 
     if (resCheckOtherSupply.isRedundant) {
-      notifications.show({
-        message: `${othersupply.name} is already present on ${resCheckOtherSupply.type} update the stock instead.`,
-        color: "yellow",
-      });
+      toast.error(
+        `${othersupply.name} is already present on ${resCheckOtherSupply.type} update the stock instead.`
+      );
       setLoading(false);
     } else {
       const isAddMedicineSuccess = await addOtherSupply(newOtherSupply);
@@ -66,10 +65,7 @@ const NewSupplies: React.FC = () => {
         const isAddStockSuccess = await createStock(formattedName);
 
         if (isAddStockSuccess) {
-          notifications.show({
-            message: "Other supply successfully added.",
-            color: "green",
-          });
+          toast.success("Other supply successfully added.");
           setLoading(false);
           await queryClient.invalidateQueries("othersupplies");
           await queryClient.invalidateQueries("stocks");

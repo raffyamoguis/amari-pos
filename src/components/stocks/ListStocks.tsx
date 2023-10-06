@@ -11,7 +11,7 @@ import {
   Flex,
   Select,
 } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
+import { toast } from "sonner";
 import { modals } from "@mantine/modals";
 import { IconTrash } from "@tabler/icons-react";
 
@@ -76,10 +76,7 @@ const ListStocks: React.FC = () => {
     }
   }, [search, filter]);
 
-  async function handleQuantityChange(
-    id: number,
-    value: number | "",
-  ) {
+  async function handleQuantityChange(id: number, value: number | "") {
     const isUpdateStockQuantitySuccess = await updateStockQuantity(
       id,
       value !== "" ? value : 0
@@ -91,17 +88,11 @@ const ListStocks: React.FC = () => {
     setSuccess(isUpdateStockQuantitySuccess);
   }
 
-   function handleInputBlur(name: string) {
+  function handleInputBlur(name: string) {
     if (success) {
-      notifications.show({
-        message: `${name} updated quantity.`,
-        color: "green",
-      });
+      toast.success(`${name} updated quantity.`);
     } else {
-      notifications.show({
-        message: `There is an error updating quantity of ${name}.`,
-        color: "red",
-      });
+      toast.error(`There is an error updating quantity of ${name}.`);
     }
   }
 
@@ -125,16 +116,10 @@ const ListStocks: React.FC = () => {
         const delStock = await deleteStock(name);
 
         if (!!delStock.result) {
-          notifications.show({
-            message: `Successfully deleted ${name}.`,
-            color: "green",
-          });
+          toast.success(`Successfully deleted ${name}.`);
           await queryClient.invalidateQueries("stocks");
         } else {
-          notifications.show({
-            message: `Error deleting ${name}.`,
-            color: "red",
-          });
+          toast.success(`Error deleting ${name}.`);
         }
 
         const result = await checkType(name);
@@ -145,16 +130,10 @@ const ListStocks: React.FC = () => {
           const delMedicine = await deleteMedicine(medicine.id);
 
           if (!!delMedicine.result) {
-            notifications.show({
-              message: `Successfully deleted ${name}. on medicine`,
-              color: "green",
-            });
+            toast.success(`Successfully deleted ${name}. on medicine`);
             await queryClient.invalidateQueries("medicines");
           } else {
-            notifications.show({
-              message: `Error deleting ${name}. on medicine`,
-              color: "red",
-            });
+            toast.error(`Error deleting ${name}. on medicine`);
           }
         }
 
@@ -164,16 +143,10 @@ const ListStocks: React.FC = () => {
           const delOtherSupply = await deleteOtherSupply(other.id);
 
           if (!!delOtherSupply.result) {
-            notifications.show({
-              message: `Successfully deleted ${name}. on othersupply`,
-              color: "green",
-            });
+            toast.success(`Successfully deleted ${name}. on othersupply`);
             await queryClient.invalidateQueries("stocks");
           } else {
-            notifications.show({
-              message: `Error deleting ${name}. on othersupply`,
-              color: "red",
-            });
+            toast.error(`Error deleting ${name}. on othersupply`);
           }
         }
       },
@@ -201,6 +174,7 @@ const ListStocks: React.FC = () => {
                   { label: "No Stocks", value: "no" },
                 ]}
                 variant="unstyled"
+                size="xs"
               />
             </Flex>
             <Text fz="xs">
@@ -239,10 +213,7 @@ const ListStocks: React.FC = () => {
                           min={0}
                           onBlur={() => handleInputBlur(stock.stockfor)}
                           onChange={(value) =>
-                            handleQuantityChange(
-                              stock.id,
-                              value,
-                            )
+                            handleQuantityChange(stock.id, value)
                           }
                         />
                       </td>

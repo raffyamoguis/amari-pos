@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import uuid from "react-uuid";
 import { useLocalStorage } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
+import { toast } from "sonner";
 import axios from "axios";
 import { API_HOST } from "../config";
 
@@ -61,18 +61,12 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
         setTimeout(() => {
           setLoggingIn(false);
           setSession(uuid());
-          notifications.show({
-            message: "Welcome.",
-            color: "green",
-          });
+          toast.success("Welcome");
         }, 1000);
       } else {
         setTimeout(() => {
           setLoggingIn(false);
-          notifications.show({
-            message: "Username or password is incorrect.",
-            color: "red",
-          });
+          toast.error("Username or password is incorrect.");
         }, 1000);
       }
     } catch (error) {
@@ -83,10 +77,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   const handleUserLogout = async () => {
     setTimeout(() => {
       removeSession();
-      notifications.show({
-        message: "Successfully log out.",
-        color: "blue",
-      });
+      toast.success("Successfully logout.");
     }, 1000);
   };
 
@@ -117,7 +108,6 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
         isServerReady={isServerReady}
         children={children}
       />
-      {/* {loading ? <Ripple /> : children} */}
     </AuthContext.Provider>
   );
 };
