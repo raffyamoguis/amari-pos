@@ -4,7 +4,7 @@ import {
   ColorScheme,
 } from "@mantine/core";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
-import { Notifications } from "@mantine/notifications";
+import { Toaster } from "sonner";
 import { ModalsProvider } from "@mantine/modals";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./util/AuthContext";
@@ -48,7 +48,7 @@ export default function App() {
         withGlobalStyles
         withNormalizeCSS
       >
-        <Notifications position="top-right" />
+        <Toaster richColors position="top-right" />
         <ModalsProvider>
           <Router>
             <AuthProvider>
